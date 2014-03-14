@@ -34,18 +34,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace {
+namespace Atoum\PraspelExtension\Praspel\Model;
 
-from('Hoa')
-
-/**
- * \Hoa\Praspel\Model\Variable
- */
--> import('Praspel.Model.Variable.~');
-
-}
-
-namespace Atoum\PraspelExtension\Praspel\Model {
+use Atoum\PraspelExtension\Asserter;
+use Hoa\Praspel;
 
 /**
  * Class \Atoum\PraspelExtension\Praspel\Model\Variable.
@@ -57,12 +49,12 @@ namespace Atoum\PraspelExtension\Praspel\Model {
  * @license    New BSD License
  */
 
-class Variable extends \Hoa\Praspel\Model\Variable {
+class Variable extends Praspel\Model\Variable {
 
     /**
      * Asserter.
      *
-     * @var \Atoum\PraspelExtension\Asserter\Praspel object
+     * @var \Atoum\PraspelExtension\Asserter object
      */
     protected $_asserter = null;
 
@@ -72,15 +64,15 @@ class Variable extends \Hoa\Praspel\Model\Variable {
      * Build a variable.
      *
      * @access  public
-     * @param   string                           $name        Name.
-     * @param   bool                             $local       Local.
-     * @param   \Hoa\Praspel\Model\Clause        $clause      Clause.
-     * @param   \Atoum\PraspelExtension\Asserter\Praspel  $asserter    Asserter.
+     * @param   string                              $name        Name.
+     * @param   bool                                $local       Local.
+     * @param   \Hoa\Praspel\Model\Clause           $clause      Clause.
+     * @param   \Atoum\PraspelExtension\Asserter    $asserter    Asserter.
      * @return  void
      * @throw   \Hoa\Praspel\Exception\Model
      */
     public function __construct ( $name, $local, Clause $clause = null,
-                                  \Atoum\PraspelExtension\Asserter\Praspel $asserter ) {
+                                  Asserter $asserter ) {
 
         parent::__construct($name, $local, $clause);
         $this->_asserter = $asserter;
@@ -92,7 +84,7 @@ class Variable extends \Hoa\Praspel\Model\Variable {
      * Get the asserter.
      *
      * @access  public
-     * @return  \Atoum\PraspelExtension\Asserter\Praspel
+     * @return  \Atoum\PraspelExtension\Asserter
      */
     public function getAsserter ( ) {
 
@@ -116,6 +108,4 @@ class Variable extends \Hoa\Praspel\Model\Variable {
 
         return $asserter;
     }
-}
-
 }

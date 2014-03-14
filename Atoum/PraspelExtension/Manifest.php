@@ -36,28 +36,27 @@
 
 namespace Atoum\PraspelExtension;
  
-use mageekguy\atoum;
 use Hoa\Math;
 use Hoa\Realdom\Realdom;
  
-class Manifest implements atoum\extension {
+class Manifest implements \atoum\extension {
 
     protected $_test;
     protected $_runner;
 
-    public function setRunner ( atoum\runner $runner ) {
+    public function setRunner ( \atoum\runner $runner ) {
 
         $this->_runner = $runner;
 
         return;
     }
 
-    public function setTest ( atoum\test $test ) {
+    public function setTest ( \atoum\test $test ) {
 
         $this->_test = $test;
 
         Realdom::setDefaultSampler(new Math\Sampler\Random());
-        $asserter = new Asserter\Praspel($test->getAsserterGenerator());
+        $asserter = new Asserter($test->getAsserterGenerator());
 
         $this->_test
              ->getAssertionManager()
@@ -89,7 +88,7 @@ class Manifest implements atoum\extension {
         return;
     }
 
-    public function handleEvent ( $event, atoum\observable $observable ) {
+    public function handleEvent ( $event, \atoum\observable $observable ) {
 
         return;
     }

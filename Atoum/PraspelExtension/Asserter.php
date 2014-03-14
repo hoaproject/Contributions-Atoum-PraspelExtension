@@ -34,35 +34,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace {
+namespace Atoum\PraspelExtension;
 
-from('Hoathis')
-
-/**
- * \Atoum\PraspelExtension\Praspel\Model\Variable
- */
--> import('Atoum.Praspel.Model.Variable');
-
-from('Hoa')
-
-/**
- * \Hoa\Praspel\AssertionChecker\Runtime
- */
--> import('Praspel.AssertionChecker.Runtime')
-
-/**
- * \Hoa\Praspel\Model\Specification
- */
--> import('Praspel.Model.Specification')
-
-/**
- * \Hoa\Praspel\Preambler\EncapsulationShunter
- */
--> import('Praspel.Preambler.EncapsulationShunter');
-
-}
-
-namespace Atoum\PraspelExtension\Asserter {
+use Atoum\PraspelExtension\Praspel\Model\Variable;
+use Hoa\Praspel;
 
 /**
  * Class \Atoum\PraspelExtension\Asserter.
@@ -75,7 +50,7 @@ namespace Atoum\PraspelExtension\Asserter {
  * @license    New BSD License
  */
 
-class Praspel extends \atoum\asserter {
+class Asserter extends \atoum\asserter {
 
     /**
      * Runtime Assertion Checker.
@@ -94,14 +69,14 @@ class Praspel extends \atoum\asserter {
     /**
      * Method name.
      *
-     * @var \Atoum\PraspelExtension\Asserter\Praspel mixed
+     * @var \Atoum\PraspelExtension\Asserter mixed
      */
     protected $_method        = null;
 
     /**
      * Specific variables (isolated of the specification).
      *
-     * @var \Atoum\PraspelExtension\Asserter\Praspel array
+     * @var \Atoum\PraspelExtension\Asserter array
      */
     protected $_variables     = array();
 
@@ -124,11 +99,11 @@ class Praspel extends \atoum\asserter {
      *
      * @access  public
      * @param   string   $method    Callable.
-     * @return  \Atoum\PraspelExtension\Asserter\Praspel
+     * @return  \Atoum\PraspelExtension\Asserter
      */
     public function setWith ( $method ) {
 
-        $this->_specification = new \Hoa\Praspel\Model\Specification();
+        $this->_specification = new Praspel\Model\Specification();
         $this->_method        = $method;
 
         return $this;
@@ -151,11 +126,11 @@ class Praspel extends \atoum\asserter {
      * @access  public
      * @param   mixed    $call    Callable (first part).
      * @param   string   $able    Callable (second part).
-     * @return  \Atoum\PraspelExtension\Asserter\Praspel
+     * @return  \Atoum\PraspelExtension\Asserter
      */
     public function verdict ( $call, $able = null ) {
 
-        $this->_rac = new \Hoa\Praspel\AssertionChecker\Runtime(
+        $this->_rac = new Praspel\AssertionChecker\Runtime(
             $this->_specification,
             xcallable($call, $able ?: $this->getMethod()),
             true
@@ -167,7 +142,7 @@ class Praspel extends \atoum\asserter {
         if(   $reflection instanceof \ReflectionMethod
            && '__construct' !== $reflection->getName())
             $this->_rac->preamble(
-                new \Hoa\Praspel\Preambler\EncapsulationShunter($this->_rac)
+                new Praspel\Preambler\EncapsulationShunter($this->_rac)
             );
 
         try {
@@ -175,7 +150,7 @@ class Praspel extends \atoum\asserter {
             if(false === $this->_rac->evaluate())
                 $this->fail('Verdict was false');
         }
-        catch ( \Hoa\Praspel\Exception $e ) {
+        catch ( Praspel\Exception $e ) {
 
             $this->fail($this->raise($e));
         }
@@ -194,7 +169,7 @@ class Praspel extends \atoum\asserter {
 
         $out = null;
 
-        if($exception instanceof \Hoa\Praspel\Exception\Group) {
+        if($exception instanceof Praspel\Exception\Group) {
 
             $out .= $exception->getFormattedMessage();
 
@@ -248,7 +223,7 @@ class Praspel extends \atoum\asserter {
     public function getVariable ( $variable ) {
 
         if(!isset($this->_variables[$variable]))
-            $this->_variables[$variable] = new \Atoum\PraspelExtension\Praspel\Model\Variable(
+            $this->_variables[$variable] = new Variable(
                 $variable,
                 false,
                 null,
@@ -257,6 +232,4 @@ class Praspel extends \atoum\asserter {
 
         return $this->_variables[$variable];
     }
-}
-
 }

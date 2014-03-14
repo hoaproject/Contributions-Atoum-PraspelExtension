@@ -34,18 +34,9 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace {
+namespace Atoum\PraspelExtension\Praspel;
 
-from('Hoathis')
-
-/**
- * \Atoum\PraspelExtension\Exception
- */
--> import('Atoum.Exception');
-
-}
-
-namespace Atoum\PraspelExtension\Praspel {
+use Atoum\PraspelExtension;
 
 /**
  * Class \Atoum\PraspelExtension\Praspel\Exception.
@@ -57,6 +48,4 @@ namespace Atoum\PraspelExtension\Praspel {
  * @license    New BSD License
  */
 
-class Exception extends \Atoum\PraspelExtension\Exception { }
-
-}
+class Exception extends PraspelExtension\Exception { }

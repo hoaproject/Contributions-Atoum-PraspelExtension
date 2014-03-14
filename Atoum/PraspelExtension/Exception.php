@@ -34,7 +34,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Atoum\PraspelExtension {
+namespace Atoum\PraspelExtension;
 
 /**
  * Class \Atoum\PraspelExtension\Exception.
@@ -47,5 +47,3 @@ namespace Atoum\PraspelExtension {
  */
 
 class Exception extends \Hoa\Core\Exception { }
-
-}
