@@ -1,5 +1,5 @@
 {
-    "name"       : "atoum/praspelextension",
+    "name"       : "atoum/praspel-extension",
     "description": "Include Praspel inside atoum.",
     "type"       : "library",
     "keywords"   : ["library", "atoum", "test", "praspel", "specification",
