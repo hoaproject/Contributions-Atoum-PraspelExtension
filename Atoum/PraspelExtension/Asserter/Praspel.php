@@ -1,0 +1,262 @@
+<?php
+
+/**
+ * Hoa
+ *
+ *
+ * @license
+ *
+ * New BSD License
+ *
+ * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the name of the Hoa nor the names of its contributors may be
+ *       used to endorse or promote products derived from this software without
+ *       specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+namespace {
+
+from('Hoathis')
+
+/**
+ * \Atoum\PraspelExtension\Praspel\Model\Variable
+ */
+-> import('Atoum.Praspel.Model.Variable');
+
+from('Hoa')
+
+/**
+ * \Hoa\Praspel\AssertionChecker\Runtime
+ */
+-> import('Praspel.AssertionChecker.Runtime')
+
+/**
+ * \Hoa\Praspel\Model\Specification
+ */
+-> import('Praspel.Model.Specification')
+
+/**
+ * \Hoa\Praspel\Preambler\EncapsulationShunter
+ */
+-> import('Praspel.Preambler.EncapsulationShunter');
+
+}
+
+namespace Atoum\PraspelExtension\Asserter {
+
+/**
+ * Class \Atoum\PraspelExtension\Asserter.
+ *
+ * Praspel asserter. A simple wrapper around \Hoa\Praspel\Model\Specification.
+ *
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @author     Julien Bianchi <julien.bianchi@hoa-project.net>
+ * @copyright  Copyright © 2007-2014 Ivan Enderlin, Julien Bianchi.
+ * @license    New BSD License
+ */
+
+class Praspel extends \atoum\asserter {
+
+    /**
+     * Runtime Assertion Checker.
+     *
+     * @var \Hoa\Praspel\AssertionChecker object
+     */
+    protected $_rac           = null;
+
+    /**
+     * Specification.
+     *
+     * @var \Hoa\Praspel\Model\Specification object
+     */
+    protected $_specification = null;
+
+    /**
+     * Method name.
+     *
+     * @var \Atoum\PraspelExtension\Asserter\Praspel mixed
+     */
+    protected $_method        = null;
+
+    /**
+     * Specific variables (isolated of the specification).
+     *
+     * @var \Atoum\PraspelExtension\Asserter\Praspel array
+     */
+    protected $_variables     = array();
+
+
+
+    /**
+     * Alias to \Hoa\Praspel\Model\Specification::getClause().
+     *
+     * @access  public
+     * @return  string  $name    Clause name.
+     * @return  \Hoa\Praspel\Model\Clause
+     */
+    public function __get ( $name ) {
+
+        return $this->_specification->getClause($name);
+    }
+
+    /**
+     * Reset the asserter, i.e. create a new fresh specification.
+     *
+     * @access  public
+     * @param   string   $method    Callable.
+     * @return  \Atoum\PraspelExtension\Asserter\Praspel
+     */
+    public function setWith ( $method ) {
+
+        $this->_specification = new \Hoa\Praspel\Model\Specification();
+        $this->_method        = $method;
+
+        return $this;
+    }
+
+    /**
+     * Get method.
+     *
+     * @access  public
+     * @return  string
+     */
+    public function getMethod ( ) {
+
+        return $this->_method;
+    }
+
+    /**
+     * Compute the test verdict.
+     *
+     * @access  public
+     * @param   mixed    $call    Callable (first part).
+     * @param   string   $able    Callable (second part).
+     * @return  \Atoum\PraspelExtension\Asserter\Praspel
+     */
+    public function verdict ( $call, $able = null ) {
+
+        $this->_rac = new \Hoa\Praspel\AssertionChecker\Runtime(
+            $this->_specification,
+            xcallable($call, $able ?: $this->getMethod()),
+            true
+        );
+
+        $callable = $this->_rac->getCallable();
+        $reflection = $callable->getReflection();
+
+        if(   $reflection instanceof \ReflectionMethod
+           && '__construct' !== $reflection->getName())
+            $this->_rac->preamble(
+                new \Hoa\Praspel\Preambler\EncapsulationShunter($this->_rac)
+            );
+
+        try {
+
+            if(false === $this->_rac->evaluate())
+                $this->fail('Verdict was false');
+        }
+        catch ( \Hoa\Praspel\Exception $e ) {
+
+            $this->fail($this->raise($e));
+        }
+
+        return $this->pass();
+    }
+
+    /**
+     * Pretty-print error.
+     *
+     * @access  protected
+     * @param   \Hoa\Praspel\Exception  $exception    Exception.
+     * @return  string
+     */
+    protected function raise ( \Hoa\Praspel\Exception $exception ) {
+
+        $out = null;
+
+        if($exception instanceof \Hoa\Praspel\Exception\Group) {
+
+            $out .= $exception->getFormattedMessage();
+
+            foreach($exception as $_exception)
+                $out .= "\n" . '  • ' . str_replace(
+                    "\n",
+                    "\n" . '    ',
+                    $this->raise($_exception)
+                );
+        }
+        else
+            $out = $exception->getFormattedMessage();
+
+        if(null !== $previous = $exception->getPreviousThrow())
+            $out .= "\n" .
+                    '    ⬇' . "\n" .
+                    $this->raise($previous);
+
+        return $out;
+    }
+
+    /**
+     * Get Runtime Assertion Checker.
+     *
+     * @access  public
+     * @return  \Hoa\Praspel\AssertionChecker
+     */
+    public function getRAC ( ) {
+
+        return $this->_rac;
+    }
+
+    /**
+     * Get specification.
+     *
+     * @access  public
+     * @return  \Hoa\Praspel\Model\Specification
+     */
+    public function getSpecification ( ) {
+
+        return $this->_specification;
+    }
+
+    /**
+     * Declare or get a variable (isolated of the specification).
+     *
+     * @access  public
+     * @param   string  $variable    Variable name.
+     * @return  \Atoum\PraspelExtension\Praspel\Model\Variable
+     */
+    public function getVariable ( $variable ) {
+
+        if(!isset($this->_variables[$variable]))
+            $this->_variables[$variable] = new \Atoum\PraspelExtension\Praspel\Model\Variable(
+                $variable,
+                false,
+                null,
+                $this
+            );
+
+        return $this->_variables[$variable];
+    }
+}
+
+}
