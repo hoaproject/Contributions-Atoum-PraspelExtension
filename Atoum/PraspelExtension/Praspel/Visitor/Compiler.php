@@ -34,18 +34,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace {
-
-from('Hoa')
-
-/**
- * \Hoa\Visitor\Visit
- */
--> import('Visitor.Visit');
-
-}
-
 namespace Atoum\PraspelExtension\Praspel\Visitor {
+
+use Hoa\Core;
+use Hoa\Praspel;
+use Hoa\Realdom;
+use Hoa\Visitor;
 
 /**
  * Class \Atoum\PraspelExtension\Praspel\Visitor\Compiler.
@@ -68,7 +62,7 @@ class Compiler implements \Hoa\Visitor\Visit {
      * @param   mixed                 $eldnah     Handle (not reference).
      * @return  mixed
      */
-    public function visit ( \Hoa\Visitor\Element $element,
+    public function visit ( Visitor\Element $element,
                             &$handle = null, $eldnah = null ) {
 
         $out   = null;
@@ -76,7 +70,7 @@ class Compiler implements \Hoa\Visitor\Visit {
 
         // Hoa\Praspel.
 
-        if($element instanceof \Hoa\Praspel\Model\Declaration) {
+        if($element instanceof Praspel\Model\Declaration) {
 
             if(true === $first) {
 
@@ -92,7 +86,7 @@ class Compiler implements \Hoa\Visitor\Visit {
             foreach($element->getPredicates() as $predicate)
                 $out .= $variable . '->predicate(\'' . $predicate . '\')';
         }
-        elseif($element instanceof \Hoa\Praspel\Model\Variable) {
+        elseif($element instanceof Praspel\Model\Variable) {
 
             $_variable = $eldnah ?: '$this->' . $element->getClause()->getName();
 
@@ -130,7 +124,7 @@ class Compiler implements \Hoa\Visitor\Visit {
                     $out .= $start . '->key(' . $pairs[0] . ')->in = ' .
                             $pairs[1];
         }
-        elseif($element instanceof \Hoa\Praspel\Model\Throwable) {
+        elseif($element instanceof Praspel\Model\Throwable) {
 
             $_variable = '$this->' . $element->getName();
 
@@ -173,13 +167,13 @@ class Compiler implements \Hoa\Visitor\Visit {
                             $exception->getDisjunction() . '\'))';
             }
         }
-        elseif($element instanceof \Hoa\Praspel\Model\Collection)
+        elseif($element instanceof Praspel\Model\Collection)
             foreach($element as $el)
                 $out .= $el->accept($this, $handle, $eldnah);
 
         // Hoa\Realdom.
 
-        elseif($element instanceof \Hoa\Realdom\Disjunction) {
+        elseif($element instanceof Realdom\Disjunction) {
 
             $realdoms = $element->getUnflattenedRealdoms();
 
@@ -189,7 +183,7 @@ class Compiler implements \Hoa\Visitor\Visit {
 
                 foreach($realdoms as $realdom) {
 
-                    if($realdom instanceof \Hoa\Realdom\IRealdom\Constant)
+                    if($realdom instanceof Realdom\IRealdom\Constant)
                         $oout[] = 'const(' .
                                   $realdom->accept($this, $handle, $eldnah) .
                                   ')';
@@ -200,11 +194,11 @@ class Compiler implements \Hoa\Visitor\Visit {
                 $out .= 'realdom()->' . implode('->or->', $oout);
             }
         }
-        elseif($element instanceof \Hoa\Realdom) {
+        elseif($element instanceof Realdom\Realdom) {
 
-            if($element instanceof \Hoa\Realdom\IRealdom\Constant) {
+            if($element instanceof Realdom\IRealdom\Constant) {
 
-                if($element instanceof \Hoa\Realdom\_Array) {
+                if($element instanceof Realdom\RealdomArray) {
 
                     $oout = array();
 
@@ -239,18 +233,18 @@ class Compiler implements \Hoa\Visitor\Visit {
                         '(' . implode(', ', $oout) . ')';
             }
         }
-        elseif($element instanceof \Hoa\Realdom\Crate\Constant) {
+        elseif($element instanceof Realdom\Crate\Constant) {
 
             $holder  = $element->getHolder();
             $praspel = $element->getPraspelRepresentation();
             $out    .= '$this->' . $element->getDeclaration()->getId() .
                        '[\'' . $praspel() . '\']';
         }
-        elseif($element instanceof \Hoa\Realdom\Crate\Variable) {
+        elseif($element instanceof Realdom\Crate\Variable) {
 
             $holder = $element->getVariable();
 
-            if($holder instanceof \Hoa\Praspel\Model\Variable\Implicit)
+            if($holder instanceof Praspel\Model\Variable\Implicit)
                 $out .= 'variable($this->' . $holder->getClause()->getId() .
                         '->getImplicitVariable(\'' . $holder->getName() .
                         '\'))';
@@ -259,7 +253,7 @@ class Compiler implements \Hoa\Visitor\Visit {
                         '->getVariable(\'' . $holder->getName() . '\', true))';
         }
         else
-            throw new \Hoa\Core\Exception(
+            throw new Core\Exception(
                 '%s is not yet implemented.', 0, get_class($element));
 
         return $out;

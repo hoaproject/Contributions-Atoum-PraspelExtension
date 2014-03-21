@@ -34,46 +34,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace {
+namespace Atoum\PraspelExtension\Praspel;
 
-from('Hoathis')
-
-/**
- * \Atoum\PraspelExtension\Praspel\Exception
- */
--> import('Atoum.Praspel.Exception')
-
-/**
- * \Atoum\PraspelExtension\Praspel\Reflection\_Class
- */
--> import('Atoum.Praspel.Reflection._Class')
-
-/**
- * \Atoum\PraspelExtension\Praspel\Visitor\Compiler
- */
--> import('Atoum.Praspel.Visitor.Compiler');
-
-
-from('Hoa')
-
-/**
- * \Hoa\Praspel
- */
--> import('Praspel.~')
-
-/**
- * \Hoa\Praspel\Iterator\Coverage
- */
--> import('Praspel.Iterator.Coverage.~')
-
-/**
- * \Hoa\Praspel\Visitor\Compiler
- */
--> import('Praspel.Visitor.Compiler');
-
-}
-
-namespace Atoum\PraspelExtension\Praspel {
+use Hoa\Praspel as HoaPraspel;
+use Hoa\Core;
 
 /**
  * Class \Atoum\PraspelExtension\Praspel\Generator.
@@ -113,7 +77,7 @@ class Generator  {
     public function __construct ( ) {
 
         $this->_compiler        = new Visitor\Compiler();
-        $this->_praspelCompiler = new \Hoa\Praspel\Visitor\Compiler();
+        $this->_praspelCompiler = new HoaPraspel\Visitor\Compiler();
 
         return;
     }
@@ -137,15 +101,13 @@ class Generator  {
         $registry  = \Hoa\Praspel::getRegistry();
         $className = '\\' . $class->getName();
         $out       = '<?php' . "\n\n" .
-                     'namespace {' . "\n\n" .
-                     'require_once \'' . $class->getFileName() . '\';' . "\n\n" .
-                     '}' . "\n\n" .
                      'namespace tests\units' .
                      (true === $class->inNamespace()
                          ? '\\' . $class->getNamespaceName()
                          : '') . ' {' . "\n\n" .
+                     'require_once \'' . $class->getFileName() . '\';' . "\n\n" .
                      'class ' . $class->getShortName() .
-                     ' extends \Atoum\PraspelExtension\Test {' . "\n";
+                     ' extends \atoum\test {' . "\n";
         $_         = '    ';
         $__        = $_ . $_;
         $___       = $_ . $_ . $_;
@@ -177,9 +139,9 @@ class Generator  {
 
             try {
 
-                $specification = \Hoa\Praspel::interprete($contract);
+                $specification = HoaPraspel\Praspel::interprete($contract);
             }
-            catch ( \Hoa\Core\Exception $e ) {
+            catch ( Core\Exception $e ) {
 
                 throw new Exception(
                     'The property %s has an ' .
@@ -230,7 +192,9 @@ class Generator  {
         foreach($class->getMethods() as $method) {
 
             $methodName = $method->getName();
-            $contract   = \Hoa\Praspel::extractFromComment($method->getDocComment());
+            $contract   = HoaPraspel\Praspel::extractFromComment(
+                $method->getDocComment()
+            );
 
             if(empty($contract)) {
 
@@ -249,9 +213,9 @@ class Generator  {
 
             try {
 
-                $specification = \Hoa\Praspel::interprete($contract, $className);
+                $specification = HoaPraspel\Praspel::interprete($contract, $className);
             }
-            catch ( \Hoa\Core\Exception $e ) {
+            catch ( Core\Exception $e ) {
 
                 throw new Exception(
                     'The method %s (in %s) has an ' .
@@ -265,7 +229,7 @@ class Generator  {
                     $e);
             }
 
-            $coverage = new \Hoa\Praspel\Iterator\Coverage($specification);
+            $coverage = new HoaPraspel\Iterator\Coverage($specification);
             $coverage->setCriteria(
                 $coverage::CRITERIA_NORMAL
               | $coverage::CRITERIA_EXCEPTIONAL
@@ -333,6 +297,4 @@ class Generator  {
 
         return $out;
     }
-}
-
 }

@@ -34,22 +34,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace {
-
-from('Hoathis')
-
-/**
- * \Atoum\PraspelExtension\Praspel\Reflection\_Property
- */
--> import('Atoum.Praspel.Reflection._Property')
-
-/**
- * \Atoum\PraspelExtension\Praspel\Reflection\_Method
- */
--> import('Atoum.Praspel.Reflection._Method');
-
-}
-
 namespace Atoum\PraspelExtension\Praspel\Reflection {
 
 /**
