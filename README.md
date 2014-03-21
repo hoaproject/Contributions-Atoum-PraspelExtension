@@ -73,7 +73,7 @@ $this->string($this->sample($data))
      ->contains(…)->…;
 ```
 
-Or also date:
+Or even dates:
 
 ```php
 $data = $this->realdom->date(
