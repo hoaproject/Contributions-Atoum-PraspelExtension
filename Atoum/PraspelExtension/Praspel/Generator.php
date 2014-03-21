@@ -45,12 +45,18 @@ use Hoa\Core;
  * Generate tests based on a Praspel-annotated class.
  *
  * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @author     Julien Bianchi <julien.bianchi@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin, Julien Bianchi.
+ * @copyright  Copyright © 2007-2014 Ivan Enderlin.
  * @license    New BSD License
  */
 
 class Generator  {
+
+    /**
+     * Namespace of the test.
+     *
+     * @var \Atoum\PraspelExtension\Praspel\Generator string
+     */
+    protected $_testNamespace   = null;
 
     /**
      * Compiler.
@@ -98,16 +104,15 @@ class Generator  {
             throw new Exception(
                 'Generate works only with reflection instances.', 0);
 
-        $registry  = \Hoa\Praspel::getRegistry();
+        $registry  = HoaPraspel\Praspel::getRegistry();
         $className = '\\' . $class->getName();
         $out       = '<?php' . "\n\n" .
-                     'namespace tests\units' .
+                     'namespace ' . $this->getTestNamespace() .
                      (true === $class->inNamespace()
                          ? '\\' . $class->getNamespaceName()
-                         : '') . ' {' . "\n\n" .
-                     'require_once \'' . $class->getFileName() . '\';' . "\n\n" .
+                         : '') . ';' . "\n\n" .
                      'class ' . $class->getShortName() .
-                     ' extends \atoum\test {' . "\n";
+                     ' extends \Atoum\PraspelExtension\Test {' . "\n";
         $_         = '    ';
         $__        = $_ . $_;
         $___       = $_ . $_ . $_;
@@ -287,14 +292,40 @@ class Generator  {
 
                 $out .= $_out . "\n" .
                         $___ . '->then' . "\n" .
-                        $____ . '->verdict(\'' . $className . '\'); '. "\n\n" .
+                        $____ . '->praspel->verdict(\'' . $className . '\'); '. "\n\n" .
                         $__ . 'return;' . "\n" .
                         $_ . '}' . "\n";
             }
         }
 
-        $out .= '}' . "\n\n" . '}' . "\n";
+        $out .= '}' . "\n";
 
         return $out;
+    }
+
+    /**
+     * Set the test namespace.
+     *
+     * @access  public
+     * @param   string  $testNamespace     Test namespace.
+     * @return  string
+     */
+    public function setTestNamespace ( $testNamespace ) {
+
+        $old                  = $this->_testNamespace;
+        $this->_testNamespace = trim($testNamespace, '\\');
+
+        return $old;
+    }
+
+    /**
+     * Get the test namespace.
+     *
+     * @access  public
+     * @return  string
+     */
+    public function getTestNamespace ( ) {
+
+        return $this->_testNamespace;
     }
 }

@@ -34,77 +34,79 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Atoum\PraspelExtension\Asserter;
-
-use Atoum\PraspelExtension\Praspel\Model\Variable;
-use Hoa\Realdom as HoaRealdom;
+namespace Atoum\PraspelExtension;
 
 /**
- * Class \Atoum\PraspelExtension\Asserter\Realdom.
+ * Class \Atoum\PraspelExtension\Test.
  *
- * Data generator. Wrapper around Hoa\Realdom.
+ * Automatically generated test must extend this class, that extend \atoum\test.
  *
  * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
  * @copyright  Copyright © 2007-2014 Ivan Enderlin.
  * @license    New BSD License
  */
 
-class Realdom extends \atoum\asserter {
+class Test extends \atoum\test {
 
     /**
-     * Create a new disjunction of realdoms.
+     * Default namespace.
      *
-     * @access  public
-     * @return  \Hoa\Realdom\Disjunction
+     * @const \Atoum\PraspelExtension\Test string
      */
-    public function newDisjunction ( ) {
-
-        return new HoaRealdom\Disjunction();
-    }
+    const defaultNamespace          = '#(?:^|\\\)tests?\\\praspel?\\\#i';
 
     /**
-     * Create a new disjunction and call a realdom on it.
+     * Test method name.
      *
-     * @access  public
-     * @param   string  $name         Name of the realdom.
-     * @param   array   $arguments    Arguments of the realdom.
-     * @return  \Hoa\Realdom\Disjunction
+     * @const \Atoum\PraspelExtension\Test string
      */
-    public function __call ( $name, $arguments ) {
-
-        return call_user_func_array(
-            array($this->newDisjunction(), $name),
-            $arguments
-        );
-    }
+    const TEST_METHOD_NAME          = '#^test ?(?<method>.+?) ?n°\d+$#u';
 
     /**
-     * Sample a value from a disjunction of realdoms.
+     * Untested method name.
      *
-     * @access  public
-     * @param   \Hoa\Realdom\Disjunction  $realdoms    A disjunction of realdoms.
-     * @return  mixed
+     * @const \Atoum\PraspelExtension\Test string
      */
-    public function sample ( HoaRealdom\Disjunction $realdoms ) {
+    const TEST_METHOD_NAME_UNTESTED = '#^test ?(?<method>.+?) ?¦ ?untested$#u';
 
-        return $realdoms->sample();
-    }
+
 
     /**
-     * Sample several values from a disjunction of realdoms.
+     * Define what to do before executing the test method.
      *
      * @access  public
-     * @param   \Hoa\Realdom\Disjunction  $realdoms    A disjunction of realdoms.
-     * @param   int                       $n           Number of values.
-     * @return  mixed
+     * @param   string  $testMethod    Test method name.
+     * @return  void
      */
-    public function sampleMany ( HoaRealdom\Disjunction $realdoms, $n = 7 ) {
+    public function beforeTestMethod ( $testMethod ) {
 
-        $out = new \SplFixedArray($n);
-
-        for(--$n; $n >= 0; --$n)
-            $out[$n] = $realdoms->sample();
+        $out = parent::beforeTestMethod($testMethod);
+        $this->beforeTestMethodPraspel($testMethod);
 
         return $out;
     }
-}
+
+    /**
+     * Praspel specific code before executing the test method.
+     *
+     * @access  protected
+     * @param   string  $testMethod    Test method name.
+     * @return  void
+     */
+    protected function beforeTestMethodPraspel ( $testMethod ) {
+
+        if(0 !== preg_match(static::TEST_METHOD_NAME_UNTESTED, $testMethod, $matches))
+            throw new \atoum\test\exceptions\skip(
+                'Method “' . $matches['method'] . '” is not tested.');
+
+        if(   0 === preg_match(static::TEST_METHOD_NAME, $testMethod, $matches)
+           || empty($matches['method']))
+            throw new \atoum\test\exceptions\skip(
+                'Method name “' . $testMethod . '” is not well-formed ' .
+                '(must match ' . static::TEST_METHOD_NAME . ').');
+
+        $this->praspel->setWith($matches['method']);
+
+        return;
+    }
+} 

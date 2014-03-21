@@ -58,10 +58,12 @@ class Generate extends Console\Dispatcher\Kit {
      * @var Praspel array
      */
     protected $options = array(
-        array('bootstrap', Console\GetOption::REQUIRED_ARGUMENT, 'b'),
-        array('class',     Console\GetOption::REQUIRED_ARGUMENT, 'c'),
-        array('help',      Console\GetOption::NO_ARGUMENT,       'h'),
-        array('help',      Console\GetOption::NO_ARGUMENT,       '?')
+        array('bootstrap',      Console\GetOption::REQUIRED_ARGUMENT, 'b'),
+        array('class',          Console\GetOption::REQUIRED_ARGUMENT, 'c'),
+        array('test-namespace', Console\GetOption::REQUIRED_ARGUMENT, 'n'),
+        array('test-root',      Console\GetOption::REQUIRED_ARGUMENT, 'r'),
+        array('help',           Console\GetOption::NO_ARGUMENT,       'h'),
+        array('help',           Console\GetOption::NO_ARGUMENT,       '?')
     );
 
 
@@ -74,8 +76,10 @@ class Generate extends Console\Dispatcher\Kit {
      */
     public function main ( ) {
 
-        $bootstrap = null;
-        $classes   = array();
+        $bootstrap     = null;
+        $classes       = array();
+        $testNamespace = 'tests\praspel';
+        $testRoot      = null;
 
         while(false !== $c = $this->getOption($v)) switch($c) {
 
@@ -88,6 +92,14 @@ class Generate extends Console\Dispatcher\Kit {
                     $classes,
                     $this->parser->parseSpecialValue($v)
                 );
+              break;
+
+            case 'n':
+                $testNamespace = $v;
+              break;
+
+            case 'r':
+                $testRoot = $v;
               break;
 
             case '__ambiguous':
@@ -121,6 +133,7 @@ class Generate extends Console\Dispatcher\Kit {
                 'Bootstrap file %s does not exist.', 1, $bootstrap);
 
         $generator = new Extension\Praspel\Generator();
+        $generator->setTestNamespace($testNamespace);
         $phpBinary = Core::getPHPBinary() ?:
                          Console\Processus::locate('php');
 
@@ -195,6 +208,9 @@ class Generate extends Console\Dispatcher\Kit {
              $this->makeUsageOptionsList(array(
                  'b'    => 'Bootstrap file (load Hoa and atoum).',
                  'c'    => 'Class to scan.',
+                 'n'    => 'Out namespace (by default: test\praspel).',
+                 'r'    => 'Root of the out namespace (by default: your test ' .
+                           'directory).',
                  'help' => 'This help.'
              )), "\n";
 

@@ -38,12 +38,43 @@ namespace Atoum\PraspelExtension;
  
 use Hoa\Math;
 use Hoa\Realdom;
+
+/**
+ * Class \Atoum\PraspelExtension\Manifest.
+ *
+ * Bootstrap of the extension.
+ *
+ * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
+ * @author     Julien Bianchi <julien.bianchi@hoa-project.net>
+ * @copyright  Copyright © 2007-2014 Ivan Enderlin, Julien Bianchi.
+ * @license    New BSD License
+ */
  
 class Manifest implements \atoum\extension {
 
-    protected $_test;
-    protected $_runner;
+    /**
+     * Test instance.
+     *
+     * @var \atoum\runner object
+     */
+    protected $_test   = null;
 
+    /**
+     * Runner instance.
+     *
+     * @var \atoum\runner object
+     */
+    protected $_runner = null;
+
+
+
+    /**
+     * Hook for the runner.
+     *
+     * @access  public
+     * @param   \atoum\runner  $runner    Runner instance.
+     * @return  void
+     */
     public function setRunner ( \atoum\runner $runner ) {
 
         $this->_runner = $runner;
@@ -51,6 +82,13 @@ class Manifest implements \atoum\extension {
         return;
     }
 
+    /**
+     * Hook for the test.
+     *
+     * @access  public
+     * @param   \atoum\test  $test    Test instance.
+     * @return  void
+     */
     public function setTest ( \atoum\test $test ) {
 
         $this->_test = $test;
@@ -79,34 +117,19 @@ class Manifest implements \atoum\extension {
 
                  return $praspel;
              })
-
-             /*
-             ->setHandler('requires', function ( ) use ( $test ) {
-
-                 return $test->praspel->requires;
-             })
-             ->setHandler('ensures', function ( ) use ( $test ) {
-
-                 return $test->praspel->ensures;
-             })
-             ->setHandler('throwable', function ( ) use ( $test ) {
-
-                 return $test->praspel->throwable;
-             })
-             ->setHandler('verdict', function ( $call, $able = null ) use ( $test ) {
-
-                 return $test->praspel->verdict($call, $able);
-             })
-             ->setHandler('variable', function ( $variable ) use ( $test ) {
-
-                 return $test->praspel->getVariable($variable);
-             })
-             */
              ;
 
         return;
     }
 
+    /**
+     * Hook for event handler.
+     *
+     * @access  public
+     * @param   string             $event         Event name.
+     * @param   \atoum\observable  $observable    Observable.
+     * @return  void
+     */
     public function handleEvent ( $event, \atoum\observable $observable ) {
 
         return;

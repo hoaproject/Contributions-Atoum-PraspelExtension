@@ -51,7 +51,7 @@ use Hoa\Visitor;
  * @license    New BSD License
  */
 
-class Compiler implements \Hoa\Visitor\Visit {
+class Compiler extends Praspel\Visitor\Compiler {
 
     /**
      * Visit an element.
@@ -88,7 +88,7 @@ class Compiler implements \Hoa\Visitor\Visit {
         }
         elseif($element instanceof Praspel\Model\Variable) {
 
-            $_variable = $eldnah ?: '$this->' . $element->getClause()->getName();
+            $_variable = $eldnah ?: '$this->praspel->' . $element->getClause()->getName();
 
             if(true === $first) {
 
@@ -126,7 +126,7 @@ class Compiler implements \Hoa\Visitor\Visit {
         }
         elseif($element instanceof Praspel\Model\Throwable) {
 
-            $_variable = '$this->' . $element->getName();
+            $_variable = '$this->praspel->' . $element->getName();
 
             if(true === $first) {
 
@@ -167,94 +167,8 @@ class Compiler implements \Hoa\Visitor\Visit {
                             $exception->getDisjunction() . '\'))';
             }
         }
-        elseif($element instanceof Praspel\Model\Collection)
-            foreach($element as $el)
-                $out .= $el->accept($this, $handle, $eldnah);
-
-        // Hoa\Realdom.
-
-        elseif($element instanceof Realdom\Disjunction) {
-
-            $realdoms = $element->getUnflattenedRealdoms();
-
-            if(!empty($realdoms)) {
-
-                $oout = array();
-
-                foreach($realdoms as $realdom) {
-
-                    if($realdom instanceof Realdom\IRealdom\Constant)
-                        $oout[] = 'const(' .
-                                  $realdom->accept($this, $handle, $eldnah) .
-                                  ')';
-                    else
-                        $oout[] = $realdom->accept($this, $handle, $eldnah);
-                }
-
-                $out .= 'realdom()->' . implode('->or->', $oout);
-            }
-        }
-        elseif($element instanceof Realdom\Realdom) {
-
-            if($element instanceof Realdom\IRealdom\Constant) {
-
-                if($element instanceof Realdom\RealdomArray) {
-
-                    $oout = array();
-
-                    foreach($element['pairs'] as $pair) {
-
-                        $_oout = null;
-
-                        foreach($pair as $_pair) {
-
-                            if(null !== $_oout)
-                                $_oout .= ', ';
-
-                            $_oout .= $_pair->accept($this, $handle, $eldnah);
-                        }
-
-                        $oout[] = 'array(' . $_oout . ')';
-                    }
-
-                    $out .= 'array(' . implode(', ', $oout) . ')';
-                }
-                else
-                    $out .= $element->getConstantRepresentation();
-            }
-            else {
-
-                $oout = array();
-
-                foreach($element->getArguments() as $argument)
-                    $oout[] = $argument->accept($this, $handle, $eldnah);
-
-                $out .= $element->getName() .
-                        '(' . implode(', ', $oout) . ')';
-            }
-        }
-        elseif($element instanceof Realdom\Crate\Constant) {
-
-            $holder  = $element->getHolder();
-            $praspel = $element->getPraspelRepresentation();
-            $out    .= '$this->' . $element->getDeclaration()->getId() .
-                       '[\'' . $praspel() . '\']';
-        }
-        elseif($element instanceof Realdom\Crate\Variable) {
-
-            $holder = $element->getVariable();
-
-            if($holder instanceof Praspel\Model\Variable\Implicit)
-                $out .= 'variable($this->' . $holder->getClause()->getId() .
-                        '->getImplicitVariable(\'' . $holder->getName() .
-                        '\'))';
-            else
-                $out .= 'variable($this->' . $holder->getClause()->getId() .
-                        '->getVariable(\'' . $holder->getName() . '\', true))';
-        }
         else
-            throw new Core\Exception(
-                '%s is not yet implemented.', 0, get_class($element));
+            $out = parent::visit($element, $handle, $eldnah);
 
         return $out;
     }
