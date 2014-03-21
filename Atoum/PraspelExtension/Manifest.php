@@ -37,7 +37,7 @@
 namespace Atoum\PraspelExtension;
  
 use Hoa\Math;
-use Hoa\Realdom\Realdom;
+use Hoa\Realdom;
  
 class Manifest implements \atoum\extension {
 
@@ -55,15 +55,32 @@ class Manifest implements \atoum\extension {
 
         $this->_test = $test;
 
-        Realdom::setDefaultSampler(new Math\Sampler\Random());
-        $asserter = new Asserter($test->getAsserterGenerator());
+        Realdom\Realdom::setDefaultSampler(new Math\Sampler\Random());
+        $asserterGenerator = $test->getAsserterGenerator();
+        $realdom = new Asserter\Realdom($asserterGenerator);
+        $praspel = new Asserter\Praspel($asserterGenerator);
 
         $this->_test
              ->getAssertionManager()
-             ->setHandler('praspel', function ( ) use ( $asserter ) {
+             ->setHandler('realdom', function ( ) use ( $realdom ) {
 
-                 return $asserter;
+                 return $realdom;
              })
+             ->setHandler('sample', function ( Realdom\Disjunction $realdom ) use ( $test ) {
+
+                 return $test->realdom->sample($realdom);
+             })
+             ->setHandler('sampleMany', function ( Realdom\Disjunction $realdom, $n = 7 ) use ( $test ) {
+
+                 return $test->realdom->sampleMany($realdom, $n);
+             })
+
+             ->setHandler('praspel', function ( ) use ( $praspel ) {
+
+                 return $praspel;
+             })
+
+             /*
              ->setHandler('requires', function ( ) use ( $test ) {
 
                  return $test->praspel->requires;
@@ -83,7 +100,9 @@ class Manifest implements \atoum\extension {
              ->setHandler('variable', function ( $variable ) use ( $test ) {
 
                  return $test->praspel->getVariable($variable);
-             });
+             })
+             */
+             ;
 
         return;
     }

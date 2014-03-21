@@ -34,10 +34,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace Atoum\PraspelExtension;
+namespace Atoum\PraspelExtension\Asserter;
 
 use Atoum\PraspelExtension\Praspel\Model\Variable;
-use Hoa\Praspel;
+use Hoa\Praspel as HoaPraspel;
 
 /**
  * Class \Atoum\PraspelExtension\Asserter.
@@ -50,7 +50,7 @@ use Hoa\Praspel;
  * @license    New BSD License
  */
 
-class Asserter extends \atoum\asserter {
+class Praspel extends \atoum\asserter {
 
     /**
      * Runtime Assertion Checker.
@@ -103,7 +103,7 @@ class Asserter extends \atoum\asserter {
      */
     public function setWith ( $method ) {
 
-        $this->_specification = new Praspel\Model\Specification();
+        $this->_specification = new HoaPraspel\Model\Specification();
         $this->_method        = $method;
 
         return $this;
@@ -130,7 +130,7 @@ class Asserter extends \atoum\asserter {
      */
     public function verdict ( $call, $able = null ) {
 
-        $this->_rac = new Praspel\AssertionChecker\Runtime(
+        $this->_rac = new HoaPraspel\AssertionChecker\Runtime(
             $this->_specification,
             xcallable($call, $able ?: $this->getMethod()),
             true
@@ -142,7 +142,7 @@ class Asserter extends \atoum\asserter {
         if(   $reflection instanceof \ReflectionMethod
            && '__construct' !== $reflection->getName())
             $this->_rac->preamble(
-                new Praspel\Preambler\EncapsulationShunter($this->_rac)
+                new HoaPraspel\Preambler\EncapsulationShunter($this->_rac)
             );
 
         try {
@@ -150,7 +150,7 @@ class Asserter extends \atoum\asserter {
             if(false === $this->_rac->evaluate())
                 $this->fail('Verdict was false');
         }
-        catch ( Praspel\Exception $e ) {
+        catch ( HoaPraspel\Exception $e ) {
 
             $this->fail($this->raise($e));
         }
@@ -165,11 +165,11 @@ class Asserter extends \atoum\asserter {
      * @param   \Hoa\Praspel\Exception  $exception    Exception.
      * @return  string
      */
-    protected function raise ( \Hoa\Praspel\Exception $exception ) {
+    protected function raise ( HoaPraspel\Exception $exception ) {
 
         $out = null;
 
-        if($exception instanceof Praspel\Exception\Group) {
+        if($exception instanceof HoaPraspel\Exception\Group) {
 
             $out .= $exception->getFormattedMessage();
 
