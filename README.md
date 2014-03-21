@@ -19,7 +19,7 @@ atoum.
 All you need is [Composer](https://getcomposer.org):
 
 ```sh
-$ composer require atoum/praspelextension 0.1
+$ composer require atoum/praspelextension *
 $ composer install
 ```
 
@@ -32,25 +32,66 @@ $runner->addExtension(new \Atoum\PraspelExtension\Manifest());
 
 ## Quick usage
 
-We are going to generate a data that matches a regular expression in order to
-test it:
+This extension brings two aspects into atoum: automatic test data generation
+(from [`Hoa\Realdom`](https://github.com/hoaproject/Realdom)) and automatic test
+suite generation (from [`Hoa\Praspel`](https://github.com/hoaproject/Praspel),
+which relies on `Hoa\Realdom`).
+
+### Automatic test data generation
+
+[more explications needed]
+We will use three asserters to generate data and one to valide data:
+
+  1. `realdom` to create a realistic domains disjunction,
+  2. `sample` to generate one data from a realistic domains disjunction,
+  3. `sampleMany` to generate several data,
+  4. `predicate` to validate a data against a realistic domains disjunction.
+
+As an example, we are going to generate an integer defined by: [7; 13] ∪ [42;
+153]:
 
 ```php
-<?php
-
-namespace Test\Units;
-
-class stdClass extends \atoum\test {
-
-    public function testPraspel ( ) {
-
-        $this->variable('i')->in = realdom()->regex('/foo[a-f]+/');
-
-        $this->string($this->variable('i')->sample())
-             ->contains('foo');
-    }
-}
+$this->sample($this->realdom->boundinteger(7, 13)->or->boundinteger(42, 153))
 ```
+
+We can obviously use the classical asserters from atoum:
+
+```php
+foreach($this->sampleMany($this->realdom->boundinteger(-5, 5), 1024) as $i)
+    $this->integer($i)->isGreaterThan(0);
+```
+
+(this example is a little dummy ;-)).
+
+We can generate more sophisticated data (please, see the standard realistic
+domain library in [`Hoa\Realdom`](https://github.com/hoaproject/Realdom)), such
+as strings based on regular expressions (and also grammars):
+
+```php
+$data = $this->realdom->regex('/[\w\-_]+(\.[\w\-\_]+)*@\w\.(net|org)/');
+$this->string($this->sample($data))
+     ->contains(…)->…;
+```
+
+Or also date:
+
+```php
+$data = $this->realdom->date(
+    'd/m H:i',
+    $this->realdom->boundinteger(
+        $this->realdom->timestamp('yesterday'),
+        $this->realdom->timestamp('next Monday')
+    )
+);
+
+foreach($this->sampleMany($data, 10) as $date)
+    var_dump($date);
+```
+
+### Automatic test suite generation
+
+We will use the `Bin/praspel` binary script.
+[TODO]
 
 ## Documentation of Hoa
 
