@@ -189,7 +189,32 @@ class Generate extends Console\Dispatcher\Kit {
             putenv($envVariable . '=' . $class);
             $reflectionner->run();
 
-            echo $generator->generate($reflection);
+            $output = $generator->generate($reflection);
+
+            if(null === $testRoot) {
+
+                echo $output;
+
+                continue;
+            }
+
+            $outClassname = $generator->getTestNamespace() . '\\' .
+                            trim($reflection->getName(), '\\');
+            $filename     = $testRoot . DS .
+                            str_replace('\\', DS, $outClassname) . '.php';
+            $dirname      = dirname($filename);
+            $status       = $class . ' (in ' . $filename . ')';
+
+            echo '  ⌛ ', $status;
+
+            if(false === is_dir($dirname))
+                mkdir(dirname($filename), 0755, true);
+
+            file_put_contents($filename, $output);
+
+            Console\Cursor::clear('↔');
+            echo '  ', Console\Chrome\Text::colorize('✔︎', 'foreground(green)'),
+                 ' ', $status, "\n";
         }
 
         return;
@@ -209,8 +234,7 @@ class Generate extends Console\Dispatcher\Kit {
                  'b'    => 'Bootstrap file (load Hoa and atoum).',
                  'c'    => 'Class to scan.',
                  'n'    => 'Out namespace (by default: tests\praspel).',
-                 'r'    => 'Root of the out namespace (by default: your test ' .
-                           'directory).',
+                 'r'    => 'Root of the out namespace.',
                  'help' => 'This help.'
              )), "\n";
 
