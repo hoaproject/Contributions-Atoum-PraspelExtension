@@ -152,8 +152,8 @@ class Generate extends Console\Dispatcher\Kit {
                 '<?php' . "\n" .
                 'require_once \'' . $bootstrap . '\';' . "\n" .
                 '$class = getenv(\'' . $envVariable . '\');' . "\n" .
-                'if(class_exists(\'\atoum\scripts\runner\', false))' . "\n" .
-                '    \atoum\scripts\runner::disableAutorun();' . "\n" .
+                'if(class_exists(\'\mageekguy\atoum\scripts\runner\', false))' . "\n" .
+                '    \mageekguy\atoum\scripts\runner::disableAutorun();' . "\n" .
                 '$reflection = new \Atoum\PraspelExtension\Praspel\Reflection\_Class($class);' . "\n" .
                 'echo serialize($reflection), "\n";'
             );

@@ -36,6 +36,7 @@
 
 namespace Atoum\PraspelExtension\Asserter;
 
+use mageekguy\atoum;
 use Atoum\PraspelExtension\Praspel\Model\Variable;
 use Hoa\Realdom as HoaRealdom;
 
@@ -49,7 +50,7 @@ use Hoa\Realdom as HoaRealdom;
  * @license    New BSD License
  */
 
-class Realdom extends \atoum\asserter {
+class Realdom extends atoum\asserter {
 
     /**
      * Create a new disjunction of realdoms.

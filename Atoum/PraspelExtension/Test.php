@@ -36,6 +36,8 @@
 
 namespace Atoum\PraspelExtension;
 
+use mageekguy\atoum;
+
 /**
  * Class \Atoum\PraspelExtension\Test.
  *
@@ -46,7 +48,7 @@ namespace Atoum\PraspelExtension;
  * @license    New BSD License
  */
 
-class Test extends \atoum\test {
+class Test extends atoum\test {
 
     /**
      * Default namespace.
@@ -96,12 +98,12 @@ class Test extends \atoum\test {
     protected function beforeTestMethodPraspel ( $testMethod ) {
 
         if(0 !== preg_match(static::TEST_METHOD_NAME_UNTESTED, $testMethod, $matches))
-            throw new \atoum\test\exceptions\skip(
+            throw new atoum\test\exceptions\skip(
                 'Method “' . $matches['method'] . '” is not tested.');
 
         if(   0 === preg_match(static::TEST_METHOD_NAME, $testMethod, $matches)
            || empty($matches['method']))
-            throw new \atoum\test\exceptions\skip(
+            throw new atoum\test\exceptions\skip(
                 'Method name “' . $testMethod . '” is not well-formed ' .
                 '(must match ' . static::TEST_METHOD_NAME . ').');
 

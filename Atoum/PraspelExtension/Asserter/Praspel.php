@@ -36,6 +36,7 @@
 
 namespace Atoum\PraspelExtension\Asserter;
 
+use mageekguy\atoum;
 use Atoum\PraspelExtension\Praspel\Model\Variable;
 use Hoa\Praspel as HoaPraspel;
 
@@ -50,7 +51,7 @@ use Hoa\Praspel as HoaPraspel;
  * @license    New BSD License
  */
 
-class Praspel extends \atoum\asserter {
+class Praspel extends atoum\asserter {
 
     /**
      * Runtime Assertion Checker.
