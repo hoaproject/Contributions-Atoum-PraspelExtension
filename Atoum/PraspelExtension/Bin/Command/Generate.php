@@ -208,7 +208,7 @@ class Generate extends Console\Dispatcher\Kit {
              $this->makeUsageOptionsList(array(
                  'b'    => 'Bootstrap file (load Hoa and atoum).',
                  'c'    => 'Class to scan.',
-                 'n'    => 'Out namespace (by default: test\praspel).',
+                 'n'    => 'Out namespace (by default: tests\praspel).',
                  'r'    => 'Root of the out namespace (by default: your test ' .
                            'directory).',
                  'help' => 'This help.'
