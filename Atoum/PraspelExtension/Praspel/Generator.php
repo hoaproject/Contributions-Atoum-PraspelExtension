@@ -98,9 +98,9 @@ class Generator  {
     public function generate ( $class ) {
 
         if($class instanceof \ReflectionClass)
-            $class = new Reflection\_Class($class);
+            $class = new Reflection\RClass($class);
 
-        if(!($class instanceof Reflection\_Class))
+        if(!($class instanceof Reflection\RClass))
             throw new Exception(
                 'Generate works only with reflection instances.', 0);
 

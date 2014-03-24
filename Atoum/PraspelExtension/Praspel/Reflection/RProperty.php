@@ -37,7 +37,7 @@
 namespace Atoum\PraspelExtension\Praspel\Reflection {
 
 /**
- * Class \Atoum\PraspelExtension\Praspel\Reflection\_Method.
+ * Class \Atoum\PraspelExtension\Praspel\Reflection\RProperty.
  *
  * 
  *
@@ -46,29 +46,26 @@ namespace Atoum\PraspelExtension\Praspel\Reflection {
  * @license    New BSD License
  */
 
-class _Method {
+class RProperty {
 
     protected $_reflection = null;
     protected $_name       = null;
     protected $_docComment = null;
-    protected $_filename   = null;
-    protected $_startLine  = null;
 
-    public function __construct ( \ReflectionMethod $method ) {
+    public function __construct ( \ReflectionProperty $property ) {
 
-        $this->setReflection($method);
+        $this->setReflection($property);
 
         return;
     }
 
-    protected function setReflection ( \ReflectionMethod $reflection ) {
+    protected function setReflection ( \ReflectionProperty $reflection ) {
 
         $old               = $this->_reflection;
+        $reflection->setAccessible(true);
         $this->_reflection = $reflection;
         $this->_name       = $reflection->getName();
         $this->_docComment = $reflection->getDocComment();
-        $this->_filename   = $reflection->getFileName();
-        $this->_startLine  = $reflection->getStartLine();
 
         return $old;
     }
@@ -81,16 +78,6 @@ class _Method {
     public function getDocComment ( ) {
 
         return $this->_docComment;
-    }
-
-    public function getFileName ( ) {
-
-        return $this->_filename;
-    }
-
-    public function getStartLine ( ) {
-
-        return $this->_startLine;
     }
 
     public function __sleep ( ) {

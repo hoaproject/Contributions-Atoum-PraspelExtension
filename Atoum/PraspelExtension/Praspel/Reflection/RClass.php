@@ -37,7 +37,7 @@
 namespace Atoum\PraspelExtension\Praspel\Reflection {
 
 /**
- * Class \Atoum\PraspelExtension\Praspel\Reflection\_Class.
+ * Class \Atoum\PraspelExtension\Praspel\Reflection\RClass.
  *
  * 
  *
@@ -46,7 +46,7 @@ namespace Atoum\PraspelExtension\Praspel\Reflection {
  * @license    New BSD License
  */
 
-class _Class {
+class RClass {
 
     protected $_reflection    = null;
     protected $_name          = null;
@@ -85,7 +85,7 @@ class _Class {
     protected function setProperties ( Array $properties ) {
 
         foreach($properties as $property)
-            $this->_properties[$property->getName()] = new _Property($property);
+            $this->_properties[$property->getName()] = new RProperty($property);
 
         return;
     }
@@ -93,7 +93,7 @@ class _Class {
     protected function setMethods ( Array $methods ) {
 
         foreach($methods as $method)
-            $this->_methods[$method->getName()] = new _Method($method);
+            $this->_methods[$method->getName()] = new RMethod($method);
 
         return;
     }
