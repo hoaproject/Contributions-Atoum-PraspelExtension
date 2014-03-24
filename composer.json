@@ -31,7 +31,5 @@
         "hoa/router"    : "dev-master",
         "hoa/visitor"   : "dev-master"
     },
-    "minimum-stability": "dev",
-    "target-dir"       : "Atoum/PraspelExtension",
-    "autoload"         : { "psr-0": { "Atoum\\PraspelExtension": "." } }
+    "minimum-stability": "dev"
 }
