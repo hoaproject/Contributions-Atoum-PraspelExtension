@@ -41,6 +41,9 @@ namespace {
  * @copyright  Copyright © 2007-2014 Ivan Enderlin.
  */
 
+require_once dirname(dirname(dirname(dirname(dirname(__DIR__))))) .
+             DIRECTORY_SEPARATOR . 'autoload.php';
+
 use Hoa\Core;
 use Hoa\Router;
 use Hoa\Dispatcher;
