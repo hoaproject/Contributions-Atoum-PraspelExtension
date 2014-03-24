@@ -36,6 +36,7 @@
 
 namespace Atoum\PraspelExtension;
  
+use mageekguy\atoum;
 use Hoa\Math;
 use Hoa\Realdom;
 
@@ -50,7 +51,7 @@ use Hoa\Realdom;
  * @license    New BSD License
  */
  
-class Manifest implements \atoum\extension {
+class Manifest implements atoum\extension {
 
     /**
      * Test instance.
@@ -75,7 +76,7 @@ class Manifest implements \atoum\extension {
      * @param   \atoum\runner  $runner    Runner instance.
      * @return  void
      */
-    public function setRunner ( \atoum\runner $runner ) {
+    public function setRunner ( atoum\runner $runner ) {
 
         $this->_runner = $runner;
 
@@ -89,7 +90,7 @@ class Manifest implements \atoum\extension {
      * @param   \atoum\test  $test    Test instance.
      * @return  void
      */
-    public function setTest ( \atoum\test $test ) {
+    public function setTest ( atoum\test $test ) {
 
         $this->_test = $test;
 
@@ -130,7 +131,7 @@ class Manifest implements \atoum\extension {
      * @param   \atoum\observable  $observable    Observable.
      * @return  void
      */
-    public function handleEvent ( $event, \atoum\observable $observable ) {
+    public function handleEvent ( $event, atoum\observable $observable ) {
 
         return;
     }
