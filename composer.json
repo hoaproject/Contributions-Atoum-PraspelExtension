@@ -31,5 +31,6 @@
         "hoa/visitor"   : "dev-master"
     },
     "minimum-stability": "dev",
-    "autoload"         : { "psr-0": { "Atoum\\PraspelExtension": "." } }
+    "autoload"         : { "psr-0": { "Atoum\\PraspelExtension": "." } },
+    "bin"              : ["Bin/praspel"]
 }
