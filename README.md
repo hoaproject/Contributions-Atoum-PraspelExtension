@@ -11,8 +11,8 @@ between industrial and research worlds.
 
 # Atoum\PraspelExtension
 
-This extension introduces [Praspel](http://github.com/hoaproject/Praspel) inside
-atoum.
+This extension introduces
+[Praspel](http://central.hoa-project.net/Resource/Library/Praspel) inside atoum.
 
 ## Install
 
@@ -33,9 +33,10 @@ $runner->addExtension(new \Atoum\PraspelExtension\Manifest());
 ## Quick usage
 
 This extension brings two aspects into atoum: automatic test data generation
-(from [`Hoa\Realdom`](https://github.com/hoaproject/Realdom)) and automatic test
-suite generation (from [`Hoa\Praspel`](https://github.com/hoaproject/Praspel),
-which relies on `Hoa\Realdom`).
+(from [`Hoa\Realdom`](http://central.hoa-project.net/Resource/Library/Realdom))
+and automatic test suite generation (from
+[`Hoa\Praspel`](http://central.hoa-project.net/Resource/Library/Praspel), which
+relies on `Hoa\Realdom`).
 
 ### Automatic test data generation
 
@@ -64,7 +65,8 @@ foreach($this->sampleMany($this->realdom->boundinteger(-5, 5), 1024) as $i)
 (this example is a little dummy ;-)).
 
 We can generate more sophisticated data (please, see the standard realistic
-domain library in [`Hoa\Realdom`](https://github.com/hoaproject/Realdom)), such
+domain library in
+[`Hoa\Realdom`](http://central.hoa-project.net/Resource/Library/Realdom)), such
 as strings based on regular expressions (and also grammars):
 
 ```php
