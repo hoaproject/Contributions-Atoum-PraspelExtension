@@ -256,6 +256,9 @@ class Generator  {
 
             foreach($coverage as $path) {
 
+                if(true === $path['post']->isEmpty())
+                    continue;
+
                 $_out = "\n" .
                         $_ . 'public function test ' . $methodName .
                         ' n°' . $i++ . ' ( ) {' . "\n\n" .
