@@ -172,7 +172,7 @@ class Praspel extends atoum\asserter {
 
         if($exception instanceof HoaPraspel\Exception\Group) {
 
-            $out .= $exception->getFormattedMessage();
+            $out .= $exception->getMessage();
 
             foreach($exception as $_exception)
                 $out .= "\n" . '  • ' . str_replace(
@@ -182,9 +182,10 @@ class Praspel extends atoum\asserter {
                 );
         }
         else
-            $out = $exception->getFormattedMessage();
+            $out = $exception->getMessage();
 
-        if(null !== $previous = $exception->getPreviousThrow())
+        if(   (null !== $previous = $exception->getPreviousThrow())
+           && ($previous instanceof HoaPraspel\Exception))
             $out .= "\n" .
                     '    ⬇' . "\n" .
                     $this->raise($previous);
