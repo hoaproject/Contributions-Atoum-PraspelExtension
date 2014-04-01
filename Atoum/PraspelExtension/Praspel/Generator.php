@@ -56,21 +56,14 @@ class Generator  {
      *
      * @var \Atoum\PraspelExtension\Praspel\Generator string
      */
-    protected $_testNamespace   = null;
+    protected $_testNamespace = null;
 
     /**
      * Compiler.
      *
-     * @var \Atoum\PraspelExtension\Praspel\Visitor\Compiler object
-     */
-    protected $_compiler        = null;
-
-    /**
-     * Praspel compiler.
-     *
      * @var \Hoa\Praspel\Visitor\Compiler object
      */
-    protected $_praspelCompiler = null;
+    protected $_compiler      = null;
 
 
 
@@ -82,8 +75,7 @@ class Generator  {
      */
     public function __construct ( ) {
 
-        $this->_compiler        = new Visitor\Compiler();
-        $this->_praspelCompiler = new HoaPraspel\Visitor\Compiler();
+        $this->_compiler = new HoaPraspel\Visitor\Compiler();
 
         return;
     }
@@ -184,7 +176,7 @@ class Generator  {
                     str_replace(
                         array("\n\n", "\n"),
                         array("\n",   "\n" . $__),
-                        $this->_praspelCompiler->visit($specification)
+                        $this->_compiler->visit($specification)
                     ) .
                     '$praspel->bindToClass(\'' . $className . '\');' . "\n" .
                     $__ . '$specification->addClause($praspel->getClause(\'invariant\'));' . "\n";
@@ -256,33 +248,57 @@ class Generator  {
 
             foreach($coverage as $path) {
 
-                if(true === $path['post']->isEmpty())
-                    continue;
-
                 $_out = "\n" .
                         $_ . 'public function test ' . $methodName .
                         ' n°' . $i++ . ' ( ) {' . "\n\n" .
-                        $__ . '$this';
+                        $__ . '$praspel = $this->praspel->getSpecification();' . "\n";
 
                 $j = 0;
 
+                $fragments = array('praspel' => true);
+
                 foreach($path['pre'] as $clause) {
+
+                    while(   (null !== $parent = $clause->getParent())
+                          && ($id = $parent->getId())
+                          && (!isset($fragments[$id]))) {
+
+                        $_out .= $__ .
+                                 '$' . $id . ' = $' . $parent->getParent()->getId() .
+                                 '->getClause(\'behavior\')' .
+                                 '->get(\'' . $parent->getIdentifier() . '\');' . "\n";
+
+                        $fragments[$id] = true;
+                    }
 
                     $k    = $j++;
                     $_out .= str_replace(
                         "\n",
-                        "\n" . $___,
-                        $this->_compiler->visit($clause, $k)
+                        "\n" . $__,
+                        $this->_compiler->visit($clause)
                     );
                 }
 
                 foreach($path['post'] as $clause) {
 
+                    while(   (null !== $parent = $clause->getParent())
+                          && ($id = $parent->getId())
+                          && (!isset($fragments[$id]))) {
+
+                        $_out .= $__ .
+                                 '$' . $id . ' = ' .
+                                 $parent->getParent()->getId() .
+                                 '->getClause(\'behavior\')' .
+                                 '->get(\'' . $parent->getIdentifier() . '\');' . "\n";
+
+                        $fragments[$id] = true;
+                    }
+
                     $k    = $j++;
                     $_out .= str_replace(
                         "\n",
-                        "\n" . $___,
-                        $this->_compiler->visit($clause, $k)
+                        "\n" . $__,
+                        $this->_compiler->visit($clause)
                     );
                 }
 
@@ -294,8 +310,7 @@ class Generator  {
                 }
 
                 $out .= $_out . "\n" .
-                        $___ . '->then' . "\n" .
-                        $____ . '->praspel->verdict(\'' . $className . '\'); '. "\n\n" .
+                        $__ . '$praspel->verdict(\'' . $className . '\'); '. "\n\n" .
                         $__ . 'return;' . "\n" .
                         $_ . '}' . "\n";
             }
