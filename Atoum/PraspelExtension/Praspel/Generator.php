@@ -310,7 +310,7 @@ class Generator  {
                 }
 
                 $out .= $_out . "\n" .
-                        $__ . '$praspel->verdict(\'' . $className . '\'); '. "\n\n" .
+                        $__ . '$this->praspel->verdict(\'' . $className . '\'); '. "\n\n" .
                         $__ . 'return;' . "\n" .
                         $_ . '}' . "\n";
             }
