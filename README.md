@@ -19,7 +19,7 @@ This extension introduces
 All you need is [Composer](https://getcomposer.org):
 
 ```sh
-$ composer require atoum/praspelextension *
+$ composer require atoum/praspel-extension *
 $ composer install
 ```
 
