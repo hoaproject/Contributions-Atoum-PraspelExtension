@@ -187,6 +187,7 @@ class Generate extends Console\Dispatcher\Kit {
         foreach($classes as $class) {
 
             putenv($envVariable . '=' . $class);
+            $buffer = null;
             $reflectionner->run();
 
             $output = $generator->generate($reflection);
