@@ -52,18 +52,26 @@ use Hoa\Core;
 class Generator  {
 
     /**
+     * Format of the test namespace.
+     * First position: test namespace, second position: class namespace.
+     *
+     * @var \Atoum\PraspelExtension\Praspel\Generator string
+     */
+    protected $_testNamespaceFormat = '%s\\%s';
+
+    /**
      * Namespace of the test.
      *
      * @var \Atoum\PraspelExtension\Praspel\Generator string
      */
-    protected $_testNamespace = null;
+    protected $_testNamespace       = null;
 
     /**
      * Compiler.
      *
      * @var \Hoa\Praspel\Visitor\Compiler object
      */
-    protected $_compiler      = null;
+    protected $_compiler            = null;
 
 
 
@@ -99,10 +107,14 @@ class Generator  {
         $registry  = HoaPraspel\Praspel::getRegistry();
         $className = '\\' . $class->getName();
         $out       = '<?php' . "\n\n" .
-                     'namespace ' . $this->getTestNamespace() .
-                     (true === $class->inNamespace()
-                         ? '\\' . $class->getNamespaceName()
-                         : '') . ';' . "\n\n" .
+                     'namespace ' .
+                     sprintf(
+                        $this->getTestNamespaceFormat(),
+                        $this->getTestNamespace(),
+                        (true === $class->inNamespace()
+                            ? $class->getNamespaceName()
+                            : '')
+                     ) . ';' . "\n\n" .
                      'class ' . $class->getShortName() .
                      ' extends \Atoum\PraspelExtension\Test {' . "\n";
         $_         = '    ';
@@ -319,6 +331,32 @@ class Generator  {
         $out .= '}' . "\n";
 
         return $out;
+    }
+
+    /**
+     * Set the test namespace format.
+     *
+     * @access  public
+     * @param   string  $format     Test namespace format.
+     * @return  string
+     */
+    public function setTestNamespaceFormat ( $format ) {
+
+        $old                        = $this->_testNamespaceFormat;
+        $this->_testNamespaceFormat = $format;
+
+        return $old;
+    }
+
+    /**
+     * Get the test namespace format.
+     *
+     * @access  public
+     * @return  string
+     */
+    public function getTestNamespaceFormat ( ) {
+
+        return $this->_testNamespaceFormat;
     }
 
     /**
