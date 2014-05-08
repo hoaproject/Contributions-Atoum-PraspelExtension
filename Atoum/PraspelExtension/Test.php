@@ -55,7 +55,7 @@ class Test extends atoum\test {
      *
      * @const \Atoum\PraspelExtension\Test string
      */
-    const defaultNamespace          = '#(?:^|\\\)tests?\\\praspel?\\\#i';
+    const defaultNamespace          = '#(?:^|\\\)tests?\\\praspel?(\\\units?)?\\\#i';
 
     /**
      * Test method name.
