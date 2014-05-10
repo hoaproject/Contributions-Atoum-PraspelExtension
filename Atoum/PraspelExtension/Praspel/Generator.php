@@ -52,26 +52,18 @@ use Hoa\Core;
 class Generator  {
 
     /**
-     * Format of the test namespace.
-     * First position: test namespace, second position: class namespace.
+     * Test namespacer, i.e. a function that computes the namespace.
      *
-     * @var \Atoum\PraspelExtension\Praspel\Generator string
+     * @var \Closure object
      */
-    protected $_testNamespaceFormat = '%s\\%s';
-
-    /**
-     * Namespace of the test.
-     *
-     * @var \Atoum\PraspelExtension\Praspel\Generator string
-     */
-    protected $_testNamespace       = null;
+    protected $_testNamespacer = null;
 
     /**
      * Compiler.
      *
      * @var \Hoa\Praspel\Visitor\Compiler object
      */
-    protected $_compiler            = null;
+    protected $_compiler       = null;
 
 
 
@@ -104,16 +96,21 @@ class Generator  {
             throw new Exception(
                 'Generate works only with reflection instances.', 0);
 
+        $namespacer = $this->getTestNamespacer();
+
+        if(null === $namespacer)
+            $namespacer = function ( $namespace ) {
+
+                return $namespace;
+            };
+
         $registry  = HoaPraspel\Praspel::getRegistry();
         $className = '\\' . $class->getName();
         $out       = '<?php' . "\n\n" .
                      'namespace ' .
-                     sprintf(
-                        $this->getTestNamespaceFormat(),
-                        $this->getTestNamespace(),
-                        (true === $class->inNamespace()
-                            ? $class->getNamespaceName()
-                            : '')
+                     (true === $class->inNamespace()
+                         ? $namespacer($class->getNamespaceName())
+                         : $namespacer('')
                      ) . ';' . "\n\n" .
                      'class ' . $class->getShortName() .
                      ' extends \Atoum\PraspelExtension\Test {' . "\n";
@@ -334,54 +331,28 @@ class Generator  {
     }
 
     /**
-     * Set the test namespace format.
+     * Set the test namespacer.
      *
      * @access  public
-     * @param   string  $format     Test namespace format.
-     * @return  string
+     * @param   \Closure  $namespacer     Namespacer.
+     * @return  \Closure
      */
-    public function setTestNamespaceFormat ( $format ) {
+    public function setTestNamespacer ( \Closure $namespacer ) {
 
-        $old                        = $this->_testNamespaceFormat;
-        $this->_testNamespaceFormat = $format;
+        $old                   = $this->_testNamespacer;
+        $this->_testNamespacer = $namespacer;
 
         return $old;
     }
 
     /**
-     * Get the test namespace format.
+     * Get the test namespacer.
      *
      * @access  public
-     * @return  string
+     * @return  \Closure
      */
-    public function getTestNamespaceFormat ( ) {
+    public function getTestNamespacer ( ) {
 
-        return $this->_testNamespaceFormat;
-    }
-
-    /**
-     * Set the test namespace.
-     *
-     * @access  public
-     * @param   string  $testNamespace     Test namespace.
-     * @return  string
-     */
-    public function setTestNamespace ( $testNamespace ) {
-
-        $old                  = $this->_testNamespace;
-        $this->_testNamespace = trim($testNamespace, '\\');
-
-        return $old;
-    }
-
-    /**
-     * Get the test namespace.
-     *
-     * @access  public
-     * @return  string
-     */
-    public function getTestNamespace ( ) {
-
-        return $this->_testNamespace;
+        return $this->_testNamespacer;
     }
 }

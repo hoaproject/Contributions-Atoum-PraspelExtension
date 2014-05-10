@@ -133,7 +133,10 @@ class Generate extends Console\Dispatcher\Kit {
                 'Bootstrap file %s does not exist.', 1, $bootstrap);
 
         $generator = new Extension\Praspel\Generator();
-        $generator->setTestNamespace($testNamespace);
+        $generator->setTestNamespacer(function ( $namesace ) use ( $testNamespace ) {
+
+            return $testNamespace . '\\' . $namespace;
+        });
         $phpBinary = Core::getPHPBinary() ?:
                          Console\Processus::locate('php');
 
@@ -199,7 +202,8 @@ class Generate extends Console\Dispatcher\Kit {
                 continue;
             }
 
-            $outClassname = $generator->getTestNamespace() . '\\' .
+            $namespacer   = $generator->getTestNamespacer();
+            $outClassname = $namespacer($reflection->getNamespaceName()) . '\\' .
                             trim($reflection->getName(), '\\');
             $filename     = $testRoot . DS .
                             str_replace('\\', DS, $outClassname) . '.php';
