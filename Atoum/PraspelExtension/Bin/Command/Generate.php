@@ -209,7 +209,7 @@ class Generate extends Console\Dispatcher\Kit {
             echo '  ⌛ ', $status;
 
             if(false === is_dir($dirname))
-                mkdir(dirname($filename), 0755, true);
+                mkdir($dirname, 0755, true);
 
             file_put_contents($filename, $output);
 
