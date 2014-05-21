@@ -187,8 +187,7 @@ class Generator  {
                         array("\n",   "\n" . $__),
                         $this->_compiler->visit($specification)
                     ) .
-                    '$praspel->bindToClass(\'' . $className . '\');' . "\n" .
-                    $__ . '$specification->addClause($praspel->getClause(\'invariant\'));' . "\n";
+                    '$praspel->bindToClass(\'' . $className . '\');' . "\n";
         }
 
         $out .= "\n" .
