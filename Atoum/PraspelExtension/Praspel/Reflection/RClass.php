@@ -48,14 +48,15 @@ namespace Atoum\PraspelExtension\Praspel\Reflection {
 
 class RClass {
 
-    protected $_reflection    = null;
-    protected $_name          = null;
-    protected $_shortName     = null;
-    protected $_filename      = null;
-    protected $_inNamespace   = null;
-    protected $_namespaceName = null;
-    protected $_properties    = array();
-    protected $_methods       = array();
+    protected $_reflection     = null;
+    protected $_name           = null;
+    protected $_shortName      = null;
+    protected $_filename       = null;
+    protected $_inNamespace    = null;
+    protected $_namespaceName  = null;
+    protected $_properties     = array();
+    protected $_methods        = array();
+    protected $_isInstantiable = false;
 
     public function __construct ( $class ) {
 
@@ -69,15 +70,16 @@ class RClass {
 
     protected function setReflection ( \ReflectionClass $reflection ) {
 
-        $old                  = $this->_reflection;
-        $this->_reflection    = $reflection;
-        $this->_name          = $reflection->getName();
-        $this->_shortName     = $reflection->getShortName();
-        $this->_filename      = $reflection->getFileName();
-        $this->_inNamespace   = $reflection->inNamespace();
-        $this->_namespaceName = $reflection->getNamespaceName();
+        $old                   = $this->_reflection;
+        $this->_reflection     = $reflection;
+        $this->_name           = $reflection->getName();
+        $this->_shortName      = $reflection->getShortName();
+        $this->_filename       = $reflection->getFileName();
+        $this->_inNamespace    = $reflection->inNamespace();
+        $this->_namespaceName  = $reflection->getNamespaceName();
         $this->setProperties($reflection->getProperties());
         $this->setMethods($reflection->getMethods());
+        $this->_isInstantiable = $reflection->isInstantiable();
 
         return $old;
     }
@@ -162,6 +164,11 @@ class RClass {
     public function getMethods ( ) {
 
         return $this->_methods;
+    }
+
+    public function isInstantiable ( ) {
+
+        return $this->_isInstantiable;
     }
 
     public function __sleep ( ) {
