@@ -133,7 +133,7 @@ class Generate extends Console\Dispatcher\Kit {
                 'Bootstrap file %s does not exist.', 1, $bootstrap);
 
         $generator = new Extension\Praspel\Generator();
-        $generator->setTestNamespacer(function ( $namesace ) use ( $testNamespace ) {
+        $generator->setTestNamespacer(function ( $namespace ) use ( $testNamespace ) {
 
             return $testNamespace . '\\' . $namespace;
         });
