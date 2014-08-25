@@ -294,7 +294,7 @@ class Generator  {
                           && (!isset($fragments[$id]))) {
 
                         $_out .= $__ .
-                                 '$' . $id . ' = ' .
+                                 '$' . $id . ' = $' .
                                  $parent->getParent()->getId() .
                                  '->getClause(\'behavior\')' .
                                  '->get(\'' . $parent->getIdentifier() . '\');' . "\n";
