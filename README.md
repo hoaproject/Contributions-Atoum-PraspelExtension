@@ -14,14 +14,22 @@ between industrial and research worlds.
 This extension introduces
 [Praspel](http://central.hoa-project.net/Resource/Library/Praspel) inside atoum.
 
-## Install
+## Installation
 
-All you need is [Composer](https://getcomposer.org):
+With [Composer](http://getcomposer.org/), to include this library into your
+dependencies, you need to require
+[`atoum/praspel-extension`](https://packagist.org/packages/atoum/praspel-extension):
 
-```sh
-$ composer require atoum/praspel-extension *
-$ composer install
+```json
+{
+    "require": {
+        "atoum/praspel-extension": "~0.0"
+    }
+}
 ```
+
+Please, read the website to [get more informations about how to
+install](http://hoa-project.net/Source.html).
 
 And to activate the extension, add this line on your `.atoum.php` configuration
 file:
