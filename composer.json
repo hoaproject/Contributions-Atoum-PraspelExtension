@@ -22,16 +22,15 @@
         "source": "http://git.hoa-project.net/"
     },
     "require": {
-        "hoa/console"   : "dev-master",
-        "hoa/core"      : "dev-master",
-        "hoa/dispatcher": "dev-master",
-        "hoa/math"      : "dev-master",
-        "hoa/praspel"   : "dev-master",
-        "hoa/realdom"   : "dev-master",
-        "hoa/router"    : "dev-master",
-        "hoa/visitor"   : "dev-master"
+        "hoa/console"   : "~2.0",
+        "hoa/core"      : "~2.0",
+        "hoa/dispatcher": "~0.0",
+        "hoa/math"      : "~0.0",
+        "hoa/praspel"   : "~0.0",
+        "hoa/realdom"   : "~0.0",
+        "hoa/router"    : "~2.0",
+        "hoa/visitor"   : "~0.0"
     },
-    "minimum-stability": "dev",
-    "autoload"         : { "psr-0": { "Atoum\\PraspelExtension": "." } },
-    "bin"              : ["Bin/praspel"]
+    "autoload": { "psr-0": { "Atoum\\PraspelExtension": "." } },
+    "bin"     : ["Bin/praspel"]
 }
