@@ -25,6 +25,7 @@
         "hoa/console"   : "~2.0",
         "hoa/core"      : "~2.0",
         "hoa/dispatcher": "~0.0",
+        "hoa/iterator"  : "~1.0",
         "hoa/math"      : "~0.0",
         "hoa/praspel"   : "~0.0",
         "hoa/realdom"   : "~0.0",

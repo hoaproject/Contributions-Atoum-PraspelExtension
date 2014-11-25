@@ -39,6 +39,7 @@ namespace Atoum\PraspelExtension\Asserter;
 use mageekguy\atoum;
 use Atoum\PraspelExtension\Praspel\Model\Variable;
 use Hoa\Realdom as HoaRealdom;
+use Hoa\Iterator as HoaIterator;
 
 /**
  * Class \Atoum\PraspelExtension\Asserter\Realdom.
@@ -101,11 +102,15 @@ class Realdom extends atoum\asserter {
      */
     public function sampleMany ( HoaRealdom\Disjunction $realdoms, $n = 7 ) {
 
-        $out = new \SplFixedArray($n);
+        return new HoaIterator\Limit(
+            new HoaIterator\CallbackGenerator(
+                function ( ) use ( $realdoms ) {
 
-        for(--$n; $n >= 0; --$n)
-            $out[$n] = $realdoms->sample();
-
-        return $out;
+                    return $realdoms->sample();
+                }
+            ),
+            0,
+            $n
+        );
     }
 }
