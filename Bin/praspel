@@ -41,8 +41,4 @@
  * @license    New BSD License
  */
 
-require_once dirname(__DIR__) . DIRECTORY_SEPARATOR .
-             'Atoum' . DIRECTORY_SEPARATOR .
-             'PraspelExtension' . DIRECTORY_SEPARATOR .
-             'Bin' . DIRECTORY_SEPARATOR .
-             'Praspel.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'Praspel.php';

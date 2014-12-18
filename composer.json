@@ -33,6 +33,10 @@
         "hoa/router"    : "~2.0",
         "hoa/visitor"   : "~1.0"
     },
-    "autoload": { "psr-0": { "Atoum\\PraspelExtension": "." } },
-    "bin"     : ["Bin/praspel"]
+    "autoload": {
+        "psr-4": {
+            "Atoum\\PraspelExtension\\": "."
+        }
+    },
+    "bin": ["Bin/praspel"]
 }

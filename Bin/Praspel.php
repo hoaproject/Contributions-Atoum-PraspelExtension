@@ -34,14 +34,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace {
-
 /**
  * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
  * @copyright  Copyright © 2007-2014 Ivan Enderlin.
  */
 
-require_once dirname(dirname(dirname(dirname(dirname(__DIR__))))) .
+require_once dirname(dirname(dirname(__DIR__))) .
              DIRECTORY_SEPARATOR . 'autoload.php';
 
 use Hoa\Core;
@@ -96,5 +94,3 @@ ob_end_clean();
 
 file_put_contents('php://stderr', $content);
 exit($code);
-
-}
