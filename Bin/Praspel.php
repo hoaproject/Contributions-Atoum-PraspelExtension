@@ -73,17 +73,15 @@ try {
         '((?<command>\w+)(?<_tail>.*?))?',
         'main',
         'main',
-        array(
-            'command' => 'welcome'
-        )
+        ['command' => 'welcome']
     );
 
-    $dispatcher = new Dispatcher\Basic(array(
-        'synchronous.controller'
+    $dispatcher = new Dispatcher\ClassMethod([
+        'synchronous.call'
             => 'Atoum\PraspelExtension\Bin\Command\(:%variables.command:lU:)',
-        'synchronous.action'
+        'synchronous.able'
             => 'main'
-    ));
+    ]);
     $dispatcher->setKitName('Hoa\Console\Dispatcher\Kit');
     exit($dispatcher->dispatch($router));
 }
