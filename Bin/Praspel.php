@@ -39,8 +39,23 @@
  * @copyright  Copyright © 2007-2014 Ivan Enderlin.
  */
 
-require_once dirname(dirname(dirname(__DIR__))) .
-             DIRECTORY_SEPARATOR . 'autoload.php';
+$autoloadFiles = [
+    dirname(__DIR__) . DIRECTORY_SEPARATOR .
+    'vendor' .  DIRECTORY_SEPARATOR .
+    'autoload.php',
+    dirname(dirname(dirname(__DIR__))) . DIRECTORY_SEPARATOR .
+    'autoload.php'
+];
+
+foreach($autoloadFiles as $autoload)
+    if(true === file_exists($autoload))
+        require_once $autoload;
+
+if(false === defined('HOA')) {
+
+    echo 'The autoload.php file is not found.', "\n";
+    exit(1);
+}
 
 use Hoa\Core;
 use Hoa\Router;
