@@ -64,5 +64,5 @@ atoum\autoloader::get()
     ->addDirectory('Hoa\Regex', $vendorDirectory . '/hoa/regex')
     ->addDirectory('Hoa\Router', $vendorDirectory . '/hoa/router')
     ->addDirectory('Hoa\Stream', $vendorDirectory . '/hoa/stream')
-    ->addDirectory('Hoa\String', $vendorDirectory . '/hoa/string')
+    ->addDirectory('Hoa\String', $vendorDirectory . '/hoa/ustring')
     ->addDirectory('Hoa\Visitor', $vendorDirectory . '/hoa/visitor');
