@@ -145,7 +145,7 @@ class Generator  {
 
             try {
 
-                $specification = HoaPraspel\Praspel::interprete($contract);
+                $specification = HoaPraspel\Praspel::interpret($contract);
             }
             catch ( Core\Exception $e ) {
 
@@ -218,7 +218,7 @@ class Generator  {
 
             try {
 
-                $specification = HoaPraspel\Praspel::interprete($contract, $className);
+                $specification = HoaPraspel\Praspel::interpret($contract, $className);
             }
             catch ( Core\Exception $e ) {
 
