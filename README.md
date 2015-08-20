@@ -49,7 +49,7 @@ relies on `Hoa\Realdom`).
 ### Automatic test data generation
 
 [more explications needed]
-We will use three asserters to generate data and one to valide data:
+We will use three asserters to generate data and one to validate data:
 
   1. `realdom` to create a realistic domains disjunction,
   2. `sample` to generate one data from a realistic domains disjunction,
