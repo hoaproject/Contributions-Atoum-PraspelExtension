@@ -43,19 +43,16 @@ $vendorDirectory = __DIR__ . '/vendor';
 if(is_dir($vendorDirectory) === false)
     $vendorDirectory = __DIR__ . '/../..';
 
-if(is_file($vendorAutoloader = $vendorDirectory . '/hoa/core/Core.php'))
-    require_once $vendorDirectory . '/hoa/core/Core.php';
-
 atoum\autoloader::get()
     ->addNamespaceAlias('atoum\praspel', __NAMESPACE__)
     ->addNamespaceAlias('mageekguy\atoum\praspel', __NAMESPACE__)
     ->addClassAlias('atoum\praspel\extension', __NAMESPACE__ . '\\Manifest' )
     ->addClassAlias('mageekguy\atoum\praspel\extension', __NAMESPACE__ . '\\Manifest' )
     ->addDirectory(__NAMESPACE__, __DIR__)
-    ->addDirectory('Hoa\Core', $vendorDirectory . '/hoa/core')
     ->addDirectory('Hoa\Compiler', $vendorDirectory . '/hoa/compiler')
     ->addDirectory('Hoa\Console', $vendorDirectory . '/hoa/console')
     ->addDirectory('Hoa\Dispatcher', $vendorDirectory . '/hoa/dispatcher')
+    ->addDirectory('Hoa\Exception', $vendorDirectory . '/hoa/exception')
     ->addDirectory('Hoa\File', $vendorDirectory . '/hoa/file')
     ->addDirectory('Hoa\Iterator', $vendorDirectory . '/hoa/iterator')
     ->addDirectory('Hoa\Math', $vendorDirectory . '/hoa/math')
