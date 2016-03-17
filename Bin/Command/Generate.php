@@ -37,7 +37,8 @@
 namespace Atoum\PraspelExtension\Bin\Command;
 
 use Atoum\PraspelExtension as Extension;
-use Hoa\Core;
+use Hoa\Consistency;
+use Hoa\Event;
 use Hoa\Console;
 
 /**
@@ -137,18 +138,18 @@ class Generate extends Console\Dispatcher\Kit {
 
             return $testNamespace . '\\' . $namespace;
         });
-        $phpBinary = Core::getPHPBinary() ?:
+        $phpBinary = Consistency::getPHPBinary() ?:
                          Console\Processus::locate('php');
 
         if(null === $phpBinary)
             throw new Extension\Exception(
                 'PHP binary is not found…', 1);
 
-        $envVariable   = '__ATOUM_PRASPEL_EXTENSION_' . md5(Core::uuid());
+        $envVariable   = '__ATOUM_PRASPEL_EXTENSION_' . md5(Consistency::uuid());
         $reflection    = null;
         $buffer        = null;
         $reflectionner = new Console\Processus($phpBinary);
-        $reflectionner->on('input', function ( Core\Event\Bucket $bucket )
+        $reflectionner->on('input', function ( Event\Bucket $bucket )
                                          use ( $envVariable, $bootstrap ) {
 
             $bucket->getSource()->writeAll(
@@ -163,7 +164,7 @@ class Generate extends Console\Dispatcher\Kit {
 
             return false;
         });
-        $reflectionner->on('output', function ( \Hoa\Core\Event\Bucket $bucket )
+        $reflectionner->on('output', function ( Event\Bucket $bucket )
                                      use ( &$buffer ) {
 
             $data    = $bucket->getData();
