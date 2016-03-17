@@ -26,6 +26,7 @@
         "hoa/consistency": "~1.0",
         "hoa/console"    : "~3.0",
         "hoa/dispatcher" : "~1.0",
+        "hoa/exception"  : "~1.0",
         "hoa/iterator"   : "~2.0",
         "hoa/math"       : "~1.0",
         "hoa/praspel"    : "~1.0",

@@ -39,11 +39,11 @@ namespace Atoum\PraspelExtension;
 /**
  * Class \Atoum\PraspelExtension\Exception.
  *
- * Extending the \Hoa\Core\Exception class.
+ * Extending the \Hoa\Exception class.
  *
  * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
  * @copyright  Copyright © 2007-2014 Ivan Enderlin.
  * @license    New BSD License
  */
 
-class Exception extends \Hoa\Core\Exception { }
+class Exception extends \Hoa\Exception { }
