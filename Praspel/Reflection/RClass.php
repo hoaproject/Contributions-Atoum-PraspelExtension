@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,35 +41,34 @@ namespace Atoum\PraspelExtension\Praspel\Reflection {
  *
  * 
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
-
-class RClass {
-
+class RClass
+{
     protected $_reflection     = null;
     protected $_name           = null;
     protected $_shortName      = null;
     protected $_filename       = null;
     protected $_inNamespace    = null;
     protected $_namespaceName  = null;
-    protected $_properties     = array();
-    protected $_methods        = array();
+    protected $_properties     = [];
+    protected $_methods        = [];
     protected $_isInstantiable = false;
 
-    public function __construct ( $class ) {
-
-        if(!($class instanceof \ReflectionClass))
+    public function __construct($class)
+    {
+        if (!($class instanceof \ReflectionClass)) {
             $class = new \ReflectionClass($class);
+        }
 
         $this->setReflection($class);
 
         return;
     }
 
-    protected function setReflection ( \ReflectionClass $reflection ) {
-
+    protected function setReflection(\ReflectionClass $reflection)
+    {
         $old                   = $this->_reflection;
         $this->_reflection     = $reflection;
         $this->_name           = $reflection->getName();
@@ -84,95 +83,99 @@ class RClass {
         return $old;
     }
 
-    protected function setProperties ( Array $properties ) {
-
-        foreach($properties as $property)
+    protected function setProperties(array $properties)
+    {
+        foreach ($properties as $property) {
             $this->_properties[$property->getName()] = new RProperty($property);
+        }
 
         return;
     }
 
-    protected function setMethods ( Array $methods ) {
-
-        foreach($methods as $method)
+    protected function setMethods(array $methods)
+    {
+        foreach ($methods as $method) {
             $this->_methods[$method->getName()] = new RMethod($method);
+        }
 
         return;
     }
 
-    public function getReflection ( ) {
-
+    public function getReflection()
+    {
         return $this->_reflection;
     }
 
-    public function getName ( ) {
-
+    public function getName()
+    {
         return $this->_name;
     }
 
-    public function getShortName ( ) {
-
+    public function getShortName()
+    {
         return $this->_shortName;
     }
 
-    public function getFileName ( ) {
-
+    public function getFileName()
+    {
         return $this->_filename;
     }
 
-    public function inNamespace ( ) {
-
+    public function inNamespace()
+    {
         return $this->_inNamespace;
     }
 
-    public function getNamespaceName ( ) {
-
+    public function getNamespaceName()
+    {
         return $this->_namespaceName;
     }
 
-    public function hasProperty ( $name ) {
-
+    public function hasProperty($name)
+    {
         return isset($this->_properties[$name]);
     }
 
-    public function getProperty ( $name ) {
-
-        if(false === $this->hasProperty($name))
+    public function getProperty($name)
+    {
+        if (false === $this->hasProperty($name)) {
             return false;
+        }
 
         return $this->_properties[$name];
     }
 
-    public function getProperties ( ) {
-
+    public function getProperties()
+    {
         return $this->_properties;
     }
 
-    public function hasMethod ( $name ) {
-
+    public function hasMethod($name)
+    {
         return isset($this->_methods[$name]);
     }
 
-    public function getMethod ( $name ) {
-
-        if(false === $this->hasMethod($name))
+    public function getMethod($name)
+    {
+        if (false === $this->hasMethod($name)) {
             return null;
+        }
 
         return $this->_methods[$name];
     }
 
-    public function getMethods ( ) {
-
+    public function getMethods()
+    {
         return $this->_methods;
     }
 
-    public function isInstantiable ( ) {
-
+    public function isInstantiable()
+    {
         return $this->_isInstantiable;
     }
 
-    public function __sleep ( ) {
-
+    public function __sleep()
+    {
         $out = get_object_vars($this);
         unset($out['_reflection']);
 

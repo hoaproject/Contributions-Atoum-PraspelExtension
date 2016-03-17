@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,28 +41,26 @@ namespace Atoum\PraspelExtension\Praspel\Reflection {
  *
  * 
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
-
-class RMethod {
-
+class RMethod
+{
     protected $_reflection = null;
     protected $_name       = null;
     protected $_docComment = null;
     protected $_filename   = null;
     protected $_startLine  = null;
 
-    public function __construct ( \ReflectionMethod $method ) {
-
+    public function __construct(\ReflectionMethod $method)
+    {
         $this->setReflection($method);
 
         return;
     }
 
-    protected function setReflection ( \ReflectionMethod $reflection ) {
-
+    protected function setReflection(\ReflectionMethod $reflection)
+    {
         $old               = $this->_reflection;
         $this->_reflection = $reflection;
         $this->_name       = $reflection->getName();
@@ -73,28 +71,28 @@ class RMethod {
         return $old;
     }
 
-    public function getName ( ) {
-
+    public function getName()
+    {
         return $this->_name;
     }
 
-    public function getDocComment ( ) {
-
+    public function getDocComment()
+    {
         return $this->_docComment;
     }
 
-    public function getFileName ( ) {
-
+    public function getFileName()
+    {
         return $this->_filename;
     }
 
-    public function getStartLine ( ) {
-
+    public function getStartLine()
+    {
         return $this->_startLine;
     }
 
-    public function __sleep ( ) {
-
+    public function __sleep()
+    {
         $out = get_object_vars($this);
         unset($out['_reflection']);
 

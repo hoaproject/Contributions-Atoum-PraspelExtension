@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,8 +35,7 @@
  */
 
 /**
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  */
 
 $autoloadFiles = [
@@ -47,26 +46,26 @@ $autoloadFiles = [
     'autoload.php'
 ];
 
-foreach($autoloadFiles as $autoload)
-    if(true === file_exists($autoload))
+foreach ($autoloadFiles as $autoload) {
+    if (true === file_exists($autoload)) {
         require_once $autoload;
+    }
+}
 
-if(false === defined('HOA')) {
-
+if (false === defined('HOA')) {
     echo 'The autoload.php file is not found.', "\n";
     exit(1);
 }
 
+use Hoa\Console;
+use Hoa\Dispatcher;
 use Hoa\Exception;
 use Hoa\Router;
-use Hoa\Dispatcher;
-use Hoa\Console;
 
 Exception\Error::enableErrorHandler();
 Exception\Idle::enableUncaughtHandler();
 
 try {
-
     $router = new Router\Cli();
     $router->get(
         'g',
@@ -84,14 +83,10 @@ try {
     ]);
     $dispatcher->setKitName('Hoa\Console\Dispatcher\Kit');
     exit($dispatcher->dispatch($router));
-}
-catch ( Exception $e ) {
-
+} catch (Exception $e) {
     $message = $e->raise(true);
     $code    = 1;
-}
-catch ( \Exception $e ) {
-
+} catch (\Exception $e) {
     $message = $e->getMessage();
     $code    = 2;
 }

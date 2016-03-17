@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -44,17 +44,15 @@ use Hoa\Praspel;
  *
  * Extend Praspel variables.
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
-
-class Variable extends Praspel\Model\Variable {
-
+class Variable extends Praspel\Model\Variable
+{
     /**
      * Asserter.
      *
-     * @var \Atoum\PraspelExtension\Asserter object
+     * @var \Atoum\PraspelExtension\Asserter
      */
     protected $_asserter = null;
 
@@ -63,17 +61,16 @@ class Variable extends Praspel\Model\Variable {
     /**
      * Build a variable.
      *
-     * @access  public
      * @param   string                              $name        Name.
      * @param   bool                                $local       Local.
      * @param   \Hoa\Praspel\Model\Clause           $clause      Clause.
      * @param   \Atoum\PraspelExtension\Asserter    $asserter    Asserter.
      * @return  void
-     * @throw   \Hoa\Praspel\Exception\Model
+     * @throws  \Hoa\Praspel\Exception\Model
      */
-    public function __construct ( $name, $local, Clause $clause = null,
-                                  Asserter $asserter ) {
-
+    public function __construct($name, $local, Clause $clause = null,
+                                  Asserter $asserter)
+    {
         parent::__construct($name, $local, $clause);
         $this->_asserter = $asserter;
 
@@ -83,11 +80,10 @@ class Variable extends Praspel\Model\Variable {
     /**
      * Get the asserter.
      *
-     * @access  public
      * @return  \Atoum\PraspelExtension\Asserter
      */
-    public function getAsserter ( ) {
-
+    public function getAsserter()
+    {
         return $this->_asserter;
     }
 
@@ -98,8 +94,8 @@ class Variable extends Praspel\Model\Variable {
      * @param   mixed  $q    Sampled value.
      * @return  boolean
      */
-    public function predicate ( $q = null ) {
-
+    public function predicate($q = null)
+    {
         $asserter  = $this->getAsserter();
         $predicate = parent::predicate($q);
 

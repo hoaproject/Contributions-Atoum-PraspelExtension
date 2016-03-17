@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,7 +36,6 @@
 
 namespace Atoum\PraspelExtension\Bin\Command;
 
-use Atoum\PraspelExtension as Extension;
 use Hoa\Console;
 
 /**
@@ -44,44 +43,45 @@ use Hoa\Console;
  *
  * Welcome!
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2013 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
-
-class Welcome extends Console\Dispatcher\Kit {
-
+class Welcome extends Console\Dispatcher\Kit
+{
     /**
      * Options description.
      *
-     * @var Praspel array
+     * @var array
      */
-    protected $options = array(
-        array('help', Console\GetOption::NO_ARGUMENT, 'h'),
-        array('help', Console\GetOption::NO_ARGUMENT, '?')
-    );
+    protected $options = [
+        ['help', Console\GetOption::NO_ARGUMENT, 'h'],
+        ['help', Console\GetOption::NO_ARGUMENT, '?']
+    ];
 
 
 
     /**
      * The entry method.
      *
-     * @access  public
      * @return  int
      */
-    public function main ( ) {
-
-        while(false !== $c = $this->getOption($v)) switch($c) {
+    public function main()
+    {
+        while (false !== $c = $this->getOption($v)) {
+            switch ($c) {
 
             case '__ambiguous':
                 $this->resolveOptionAmbiguity($v);
+
               break;
 
             case 'h':
             case '?':
             default:
                 return $this->usage();
+
               break;
+        }
         }
 
         echo 'Welcome!';
@@ -92,18 +92,17 @@ class Welcome extends Console\Dispatcher\Kit {
     /**
      * The command usage.
      *
-     * @access  public
      * @return  int
      */
-    public function usage ( ) {
-
+    public function usage()
+    {
         echo 'Usage   : atoum:generate <options>', "\n",
              'Options :', "\n",
-             $this->makeUsageOptionsList(array(
+             $this->makeUsageOptionsList([
                  'b'    => 'Bootstrap file (load Hoa and atoum).',
                  'c'    => 'Class to scan.',
                  'help' => 'This help.'
-             )), "\n";
+             ]), "\n";
 
         return;
     }

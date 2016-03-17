@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,46 +36,41 @@
 
 namespace Atoum\PraspelExtension\Asserter;
 
-use mageekguy\atoum;
-use Atoum\PraspelExtension\Praspel\Model\Variable;
-use Hoa\Realdom as HoaRealdom;
 use Hoa\Iterator as HoaIterator;
+use Hoa\Realdom as HoaRealdom;
+use mageekguy\atoum;
 
 /**
  * Class \Atoum\PraspelExtension\Asserter\Realdom.
  *
  * Data generator. Wrapper around Hoa\Realdom.
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
-
-class Realdom extends atoum\asserter {
-
+class Realdom extends atoum\asserter
+{
     /**
      * Create a new disjunction of realdoms.
      *
-     * @access  public
      * @return  \Hoa\Realdom\Disjunction
      */
-    public function newDisjunction ( ) {
-
+    public function newDisjunction()
+    {
         return new HoaRealdom\Disjunction();
     }
 
     /**
      * Create a new disjunction and call a realdom on it.
      *
-     * @access  public
      * @param   string  $name         Name of the realdom.
      * @param   array   $arguments    Arguments of the realdom.
      * @return  \Hoa\Realdom\Disjunction
      */
-    public function __call ( $name, $arguments ) {
-
+    public function __call($name, $arguments)
+    {
         return call_user_func_array(
-            array($this->newDisjunction(), $name),
+            [$this->newDisjunction(), $name],
             $arguments
         );
     }
@@ -83,28 +78,26 @@ class Realdom extends atoum\asserter {
     /**
      * Sample a value from a disjunction of realdoms.
      *
-     * @access  public
      * @param   \Hoa\Realdom\Disjunction  $realdoms    A disjunction of realdoms.
      * @return  mixed
      */
-    public function sample ( HoaRealdom\Disjunction $realdoms ) {
-
+    public function sample(HoaRealdom\Disjunction $realdoms)
+    {
         return $realdoms->sample();
     }
 
     /**
      * Sample several values from a disjunction of realdoms.
      *
-     * @access  public
      * @param   \Hoa\Realdom\Disjunction  $realdoms    A disjunction of realdoms.
      * @param   int                       $n           Number of values.
      * @return  mixed
      */
-    public function sampleMany ( HoaRealdom\Disjunction $realdoms, $n = 7 ) {
-
+    public function sampleMany(HoaRealdom\Disjunction $realdoms, $n = 7)
+    {
         return new HoaIterator\Limit(
             new HoaIterator\CallbackGenerator(
-                function ( ) use ( $realdoms ) {
+                function () use ($realdoms) {
 
                     return $realdoms->sample();
                 }

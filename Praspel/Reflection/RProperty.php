@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -41,26 +41,24 @@ namespace Atoum\PraspelExtension\Praspel\Reflection {
  *
  * 
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
-
-class RProperty {
-
+class RProperty
+{
     protected $_reflection = null;
     protected $_name       = null;
     protected $_docComment = null;
 
-    public function __construct ( \ReflectionProperty $property ) {
-
+    public function __construct(\ReflectionProperty $property)
+    {
         $this->setReflection($property);
 
         return;
     }
 
-    protected function setReflection ( \ReflectionProperty $reflection ) {
-
+    protected function setReflection(\ReflectionProperty $reflection)
+    {
         $old               = $this->_reflection;
         $reflection->setAccessible(true);
         $this->_reflection = $reflection;
@@ -70,18 +68,18 @@ class RProperty {
         return $old;
     }
 
-    public function getName ( ) {
-
+    public function getName()
+    {
         return $this->_name;
     }
 
-    public function getDocComment ( ) {
-
+    public function getDocComment()
+    {
         return $this->_docComment;
     }
 
-    public function __sleep ( ) {
-
+    public function __sleep()
+    {
         $out = get_object_vars($this);
         unset($out['_reflection']);
 

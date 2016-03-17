@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2013, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -38,54 +38,53 @@ namespace Atoum\PraspelExtension\Bin\Command;
 
 use Atoum\PraspelExtension as Extension;
 use Hoa\Consistency;
-use Hoa\Event;
 use Hoa\Console;
+use Hoa\Event;
 
 /**
  * Class Atoum\PraspelExtension\Bin\Command\Generate.
  *
  * Compile Praspel test suite into atoum test suite.
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2013 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
-
-class Generate extends Console\Dispatcher\Kit {
-
+class Generate extends Console\Dispatcher\Kit
+{
     /**
      * Options description.
      *
-     * @var Praspel array
+     * @var array
      */
-    protected $options = array(
-        array('bootstrap',      Console\GetOption::REQUIRED_ARGUMENT, 'b'),
-        array('class',          Console\GetOption::REQUIRED_ARGUMENT, 'c'),
-        array('test-namespace', Console\GetOption::REQUIRED_ARGUMENT, 'n'),
-        array('test-root',      Console\GetOption::REQUIRED_ARGUMENT, 'r'),
-        array('help',           Console\GetOption::NO_ARGUMENT,       'h'),
-        array('help',           Console\GetOption::NO_ARGUMENT,       '?')
-    );
+    protected $options = [
+        ['bootstrap',      Console\GetOption::REQUIRED_ARGUMENT, 'b'],
+        ['class',          Console\GetOption::REQUIRED_ARGUMENT, 'c'],
+        ['test-namespace', Console\GetOption::REQUIRED_ARGUMENT, 'n'],
+        ['test-root',      Console\GetOption::REQUIRED_ARGUMENT, 'r'],
+        ['help',           Console\GetOption::NO_ARGUMENT,       'h'],
+        ['help',           Console\GetOption::NO_ARGUMENT,       '?']
+    ];
 
 
 
     /**
      * The entry method.
      *
-     * @access  public
      * @return  int
      */
-    public function main ( ) {
-
+    public function main()
+    {
         $bootstrap     = null;
-        $classes       = array();
+        $classes       = [];
         $testNamespace = 'tests\praspel';
         $testRoot      = null;
 
-        while(false !== $c = $this->getOption($v)) switch($c) {
+        while (false !== $c = $this->getOption($v)) {
+            switch ($c) {
 
             case 'b':
                 $bootstrap = $v;
+
               break;
 
             case 'c':
@@ -93,64 +92,71 @@ class Generate extends Console\Dispatcher\Kit {
                     $classes,
                     $this->parser->parseSpecialValue($v)
                 );
+
               break;
 
             case 'n':
                 $testNamespace = $v;
+
               break;
 
             case 'r':
                 $testRoot = $v;
+
               break;
 
             case '__ambiguous':
                 $this->resolveOptionAmbiguity($v);
+
               break;
 
             case 'h':
             case '?':
             default:
                 return $this->usage();
+
               break;
         }
+        }
 
-        if(null === $bootstrap) {
-
+        if (null === $bootstrap) {
             $bootstrapDirectory = getcwd();
             $bootstrapFile      = '.bootstrap.atoum.php';
 
-            while(   (false === file_exists($bootstrapDirectory . DS . $bootstrapFile))
-                  && ($bootstrapDirectory !== $handle = dirname($bootstrapDirectory)))
+            while ((false === file_exists($bootstrapDirectory . DS . $bootstrapFile))
+                  && ($bootstrapDirectory !== $handle = dirname($bootstrapDirectory))) {
                 $bootstrapDirectory = $handle;
+            }
 
             $bootstrap = $bootstrapDirectory . DS . $bootstrapFile;
 
-            if(false === file_exists($bootstrap))
+            if (false === file_exists($bootstrap)) {
                 throw new Extension\Exception(
                     'Bootstrap file is not found.', 0);
-        }
-        elseif(false === file_exists($bootstrap))
+            }
+        } elseif (false === file_exists($bootstrap)) {
             throw new Extension\Exception(
                 'Bootstrap file %s does not exist.', 1, $bootstrap);
+        }
 
         $generator = new Extension\Praspel\Generator();
-        $generator->setTestNamespacer(function ( $namespace ) use ( $testNamespace ) {
+        $generator->setTestNamespacer(function ($namespace) use ($testNamespace) {
 
             return $testNamespace . '\\' . $namespace;
         });
         $phpBinary = Consistency::getPHPBinary() ?:
                          Console\Processus::locate('php');
 
-        if(null === $phpBinary)
+        if (null === $phpBinary) {
             throw new Extension\Exception(
                 'PHP binary is not found…', 1);
+        }
 
         $envVariable   = '__ATOUM_PRASPEL_EXTENSION_' . md5(Consistency::uuid());
         $reflection    = null;
         $buffer        = null;
         $reflectionner = new Console\Processus($phpBinary);
-        $reflectionner->on('input', function ( Event\Bucket $bucket )
-                                         use ( $envVariable, $bootstrap ) {
+        $reflectionner->on('input', function (Event\Bucket $bucket) use ($envVariable, $bootstrap) {
 
             $bucket->getSource()->writeAll(
                 '<?php' . "\n" .
@@ -164,20 +170,18 @@ class Generate extends Console\Dispatcher\Kit {
 
             return false;
         });
-        $reflectionner->on('output', function ( Event\Bucket $bucket )
-                                     use ( &$buffer ) {
+        $reflectionner->on('output', function (Event\Bucket $bucket) use (&$buffer) {
 
             $data    = $bucket->getData();
             $buffer .= $data['line'] . "\n";
 
             return;
         });
-        $reflectionner->on('stop', function ( ) use ( &$buffer, &$reflection ) {
+        $reflectionner->on('stop', function () use (&$buffer, &$reflection) {
 
             $handle = @unserialize($buffer);
 
-            if(false === $handle) {
-
+            if (false === $handle) {
                 echo $buffer, "\n";
 
                 return;
@@ -188,16 +192,14 @@ class Generate extends Console\Dispatcher\Kit {
             return;
         });
 
-        foreach($classes as $class) {
-
+        foreach ($classes as $class) {
             putenv($envVariable . '=' . $class);
             $buffer = null;
             $reflectionner->run();
 
             $output = $generator->generate($reflection);
 
-            if(null === $testRoot) {
-
+            if (null === $testRoot) {
                 echo $output;
 
                 continue;
@@ -213,8 +215,9 @@ class Generate extends Console\Dispatcher\Kit {
 
             echo '  ⌛ ', $status;
 
-            if(false === is_dir($dirname))
+            if (false === is_dir($dirname)) {
                 mkdir($dirname, 0755, true);
+            }
 
             file_put_contents($filename, $output);
 
@@ -229,20 +232,19 @@ class Generate extends Console\Dispatcher\Kit {
     /**
      * The command usage.
      *
-     * @access  public
      * @return  int
      */
-    public function usage ( ) {
-
+    public function usage()
+    {
         echo 'Usage   : generate <options>', "\n",
              'Options :', "\n",
-             $this->makeUsageOptionsList(array(
+             $this->makeUsageOptionsList([
                  'b'    => 'Bootstrap file (load Hoa and atoum).',
                  'c'    => 'Class to scan.',
                  'n'    => 'Out namespace (by default: tests\praspel).',
                  'r'    => 'Root of the out namespace.',
                  'help' => 'This help.'
-             )), "\n";
+             ]), "\n";
 
         return;
     }

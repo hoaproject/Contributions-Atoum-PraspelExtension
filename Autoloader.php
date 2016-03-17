@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2015, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -40,14 +40,15 @@ use mageekguy\atoum;
 
 $vendorDirectory = __DIR__ . '/vendor';
 
-if(is_dir($vendorDirectory) === false)
+if (is_dir($vendorDirectory) === false) {
     $vendorDirectory = __DIR__ . '/../..';
+}
 
 atoum\autoloader::get()
     ->addNamespaceAlias('atoum\praspel', __NAMESPACE__)
     ->addNamespaceAlias('mageekguy\atoum\praspel', __NAMESPACE__)
-    ->addClassAlias('atoum\praspel\extension', __NAMESPACE__ . '\\Manifest' )
-    ->addClassAlias('mageekguy\atoum\praspel\extension', __NAMESPACE__ . '\\Manifest' )
+    ->addClassAlias('atoum\praspel\extension', __NAMESPACE__ . '\\Manifest')
+    ->addClassAlias('mageekguy\atoum\praspel\extension', __NAMESPACE__ . '\\Manifest')
     ->addDirectory(__NAMESPACE__, __DIR__)
     ->addDirectory('Hoa\Compiler', $vendorDirectory . '/hoa/compiler')
     ->addDirectory('Hoa\Console', $vendorDirectory . '/hoa/console')

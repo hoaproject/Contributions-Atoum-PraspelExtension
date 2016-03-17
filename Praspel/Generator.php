@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -36,32 +36,30 @@
 
 namespace Atoum\PraspelExtension\Praspel;
 
-use Hoa\Praspel as HoaPraspel;
 use Hoa\Exception;
+use Hoa\Praspel as HoaPraspel;
 
 /**
  * Class \Atoum\PraspelExtension\Praspel\Generator.
  *
  * Generate tests based on a Praspel-annotated class.
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
-
-class Generator  {
-
+class Generator
+{
     /**
      * Test namespacer, i.e. a function that computes the namespace.
      *
-     * @var \Closure object
+     * @var \Closure
      */
     protected $_testNamespacer = null;
 
     /**
      * Compiler.
      *
-     * @var \Hoa\Praspel\Visitor\Compiler object
+     * @var \Hoa\Praspel\Visitor\Compiler
      */
     protected $_compiler       = null;
 
@@ -70,11 +68,10 @@ class Generator  {
     /**
      * Constructor.
      *
-     * @access  public
      * @return  void
      */
-    public function __construct ( ) {
-
+    public function __construct()
+    {
         $this->_compiler = new HoaPraspel\Visitor\Compiler();
 
         return;
@@ -83,26 +80,28 @@ class Generator  {
     /**
      * Generate tests based on a Praspel-annotated class.
      *
-     * @access  public
      * @param   \ReflectionClass  $class     Annotated class.
      * @return  string
      */
-    public function generate ( $class ) {
-
-        if($class instanceof \ReflectionClass)
+    public function generate($class)
+    {
+        if ($class instanceof \ReflectionClass) {
             $class = new Reflection\RClass($class);
+        }
 
-        if(!($class instanceof Reflection\RClass))
+        if (!($class instanceof Reflection\RClass)) {
             throw new Exception(
                 'Generate works only with reflection instances.', 0);
+        }
 
         $namespacer = $this->getTestNamespacer();
 
-        if(null === $namespacer)
-            $namespacer = function ( $namespace ) {
+        if (null === $namespacer) {
+            $namespacer = function ($namespace) {
 
                 return $namespace;
             };
+        }
 
         $registry  = HoaPraspel\Praspel::getRegistry();
         $className = '\\' . $class->getName();
@@ -129,14 +128,12 @@ class Generator  {
                 $__ . '$specification->bindToClass(\'' . $className . '\');' . "\n" .
                 $__ . '$registry = \Hoa\Praspel::getRegistry();' . "\n";
 
-        foreach($class->getProperties() as $property) {
-
+        foreach ($class->getProperties() as $property) {
             $propertyName  = $property->getName();
             $contract      = \Hoa\Praspel::extractFromComment($property->getDocComment());
             $id            = $className . '::$' . $propertyName;
 
-            if(empty($contract)) {
-
+            if (empty($contract)) {
                 $out .= "\n" . $__ .
                         '// Property ' . $propertyName . ' is not specified.';
 
@@ -144,24 +141,20 @@ class Generator  {
             }
 
             try {
-
                 $specification = HoaPraspel\Praspel::interpret($contract);
-            }
-            catch ( Exception $e ) {
-
+            } catch (Exception $e) {
                 throw new Exception(
                     'The property %s has an ' .
                     'error in the following contract:' . "\n\n" . '%s' . "\n",
                     1,
-                    array(
+                    [
                         $id,
                         '    ' . str_replace("\n", "\n" . '    ', $contract)
-                    ),
+                    ],
                     $e);
             }
 
-            if(false === $specification->clauseExists('invariant')) {
-
+            if (false === $specification->clauseExists('invariant')) {
                 $out .= "\n" . $__ .
                         '// Property ' . $propertyName . ' is not specificied' .
                         ' (no @invariant).';
@@ -181,10 +174,10 @@ class Generator  {
                     $__ . ' */' .
                     "\n" . $__ .
                     '$registry[\'' . ltrim($className, '\\') . '::$' .
-                    $propertyName. '\'] = ' .
+                    $propertyName . '\'] = ' .
                     str_replace(
-                        array("\n\n", "\n"),
-                        array("\n",   "\n" . $__),
+                        ["\n\n", "\n"],
+                        ["\n",   "\n" . $__],
                         $this->_compiler->visit($specification)
                     ) .
                     '$praspel->bindToClass(\'' . $className . '\');' . "\n";
@@ -194,15 +187,13 @@ class Generator  {
                 $__ . 'return $out;' . "\n" .
                 $_ . '}' . "\n";
 
-        foreach($class->getMethods() as $method) {
-
+        foreach ($class->getMethods() as $method) {
             $methodName = $method->getName();
             $contract   = HoaPraspel\Praspel::extractFromComment(
                 $method->getDocComment()
             );
 
-            if(empty($contract)) {
-
+            if (empty($contract)) {
                 $out .= "\n" . $_ . '/**' . "\n" .
                         $_ . ' * Method: ' .
                         ($full = $className . '::' . $methodName) . '.' . "\n" .
@@ -217,20 +208,17 @@ class Generator  {
             }
 
             try {
-
                 $specification = HoaPraspel\Praspel::interpret($contract, $className);
-            }
-            catch ( Exception $e ) {
-
+            } catch (Exception $e) {
                 throw new Exception(
                     'The method %s (in %s) has an ' .
                     'error in the following contract:' . "\n\n" . '%s' . "\n",
                     1,
-                    array(
+                    [
                         $className . '::' . $methodName,
                         $method->getFileName() . '#' . $method->getStartLine(),
                         '    ' . str_replace("\n", "\n" . '    ', $contract)
-                    ),
+                    ],
                     $e);
             }
 
@@ -254,8 +242,7 @@ class Generator  {
 
             $i = 1;
 
-            foreach($coverage as $path) {
-
+            foreach ($coverage as $path) {
                 $_out = "\n" .
                         $_ . 'public function test ' . $methodName .
                         ' n°' . $i++ . ' ( ) {' . "\n\n" .
@@ -263,14 +250,12 @@ class Generator  {
 
                 $j = 0;
 
-                $fragments = array('praspel' => true);
+                $fragments = ['praspel' => true];
 
-                foreach($path['pre'] as $clause) {
-
-                    while(   (null !== $parent = $clause->getParent())
+                foreach ($path['pre'] as $clause) {
+                    while ((null !== $parent = $clause->getParent())
                           && ($id = $parent->getId())
                           && (!isset($fragments[$id]))) {
-
                         $_out .= $__ .
                                  '$' . $id . ' = $' . $parent->getParent()->getId() .
                                  '->getClause(\'behavior\')' .
@@ -287,12 +272,10 @@ class Generator  {
                     );
                 }
 
-                foreach($path['post'] as $clause) {
-
-                    while(   (null !== $parent = $clause->getParent())
+                foreach ($path['post'] as $clause) {
+                    while ((null !== $parent = $clause->getParent())
                           && ($id = $parent->getId())
                           && (!isset($fragments[$id]))) {
-
                         $_out .= $__ .
                                  '$' . $id . ' = $' .
                                  $parent->getParent()->getId() .
@@ -310,15 +293,14 @@ class Generator  {
                     );
                 }
 
-                if(0 === $j) {
-
+                if (0 === $j) {
                     --$i;
 
                     continue;
                 }
 
                 $out .= $_out . "\n" .
-                        $__ . '$this->praspel->verdict(\'' . $className . '\'); '. "\n\n" .
+                        $__ . '$this->praspel->verdict(\'' . $className . '\'); ' . "\n\n" .
                         $__ . 'return;' . "\n" .
                         $_ . '}' . "\n";
             }
@@ -332,12 +314,11 @@ class Generator  {
     /**
      * Set the test namespacer.
      *
-     * @access  public
      * @param   \Closure  $namespacer     Namespacer.
      * @return  \Closure
      */
-    public function setTestNamespacer ( \Closure $namespacer ) {
-
+    public function setTestNamespacer(\Closure $namespacer)
+    {
         $old                   = $this->_testNamespacer;
         $this->_testNamespacer = $namespacer;
 
@@ -347,11 +328,10 @@ class Generator  {
     /**
      * Get the test namespacer.
      *
-     * @access  public
      * @return  \Closure
      */
-    public function getTestNamespacer ( ) {
-
+    public function getTestNamespacer()
+    {
         return $this->_testNamespacer;
     }
 }
