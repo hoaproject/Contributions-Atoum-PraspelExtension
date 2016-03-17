@@ -37,7 +37,7 @@
 namespace Atoum\PraspelExtension\Praspel;
 
 use Hoa\Praspel as HoaPraspel;
-use Hoa\Core;
+use Hoa\Exception;
 
 /**
  * Class \Atoum\PraspelExtension\Praspel\Generator.
@@ -147,7 +147,7 @@ class Generator  {
 
                 $specification = HoaPraspel\Praspel::interpret($contract);
             }
-            catch ( Core\Exception $e ) {
+            catch ( Exception $e ) {
 
                 throw new Exception(
                     'The property %s has an ' .
@@ -220,7 +220,7 @@ class Generator  {
 
                 $specification = HoaPraspel\Praspel::interpret($contract, $className);
             }
-            catch ( Core\Exception $e ) {
+            catch ( Exception $e ) {
 
                 throw new Exception(
                     'The method %s (in %s) has an ' .
