@@ -133,8 +133,8 @@ class Praspel extends atoum\asserter
         $callable   = $this->_rac->getCallable();
         $reflection = $callable->getReflection();
 
-        if ($reflection instanceof \ReflectionMethod
-           && '__construct' !== $reflection->getName()) {
+        if ($reflection instanceof \ReflectionMethod &&
+            '__construct' !== $reflection->getName()) {
             $this->_rac->preamble(
                 new HoaPraspel\Preambler\EncapsulationShunter($this->_rac)
             );
@@ -165,21 +165,24 @@ class Praspel extends atoum\asserter
             $out .= $exception->getMessage();
 
             foreach ($exception as $_exception) {
-                $out .= "\n" . '  • ' . str_replace(
-                    "\n",
-                    "\n" . '    ',
-                    $this->raise($_exception)
-                );
+                $out .=
+                    "\n" . '  • ' .
+                    str_replace(
+                        "\n",
+                        "\n" . '    ',
+                        $this->raise($_exception)
+                    );
             }
         } else {
             $out = $exception->getMessage();
         }
 
-        if ((null !== $previous = $exception->getPreviousThrow())
-           && ($previous instanceof HoaPraspel\Exception)) {
-            $out .= "\n" .
-                    '    ⬇' . "\n" .
-                    $this->raise($previous);
+        if ((null !== $previous = $exception->getPreviousThrow()) &&
+            ($previous instanceof HoaPraspel\Exception)) {
+            $out .=
+                "\n" .
+                '    ⬇' . "\n" .
+                $this->raise($previous);
         }
 
         return $out;

@@ -68,9 +68,12 @@ class Variable extends Praspel\Model\Variable
      * @return  void
      * @throws  \Hoa\Praspel\Exception\Model
      */
-    public function __construct($name, $local, Clause $clause = null,
-                                  Asserter $asserter)
-    {
+    public function __construct(
+        $name,
+        $local,
+        Clause $clause = null,
+        Asserter $asserter
+    ) {
         parent::__construct($name, $local, $clause);
         $this->_asserter = $asserter;
 

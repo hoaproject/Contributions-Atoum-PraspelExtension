@@ -81,50 +81,47 @@ class Generate extends Console\Dispatcher\Kit
 
         while (false !== $c = $this->getOption($v)) {
             switch ($c) {
+                case 'b':
+                    $bootstrap = $v;
 
-            case 'b':
-                $bootstrap = $v;
+                    break;
 
-              break;
+                case 'c':
+                    $classes = array_merge(
+                        $classes,
+                        $this->parser->parseSpecialValue($v)
+                    );
 
-            case 'c':
-                $classes = array_merge(
-                    $classes,
-                    $this->parser->parseSpecialValue($v)
-                );
+                    break;
 
-              break;
+                case 'n':
+                    $testNamespace = $v;
 
-            case 'n':
-                $testNamespace = $v;
+                    break;
 
-              break;
+                case 'r':
+                    $testRoot = $v;
 
-            case 'r':
-                $testRoot = $v;
+                    break;
 
-              break;
+                case '__ambiguous':
+                    $this->resolveOptionAmbiguity($v);
 
-            case '__ambiguous':
-                $this->resolveOptionAmbiguity($v);
+                    break;
 
-              break;
-
-            case 'h':
-            case '?':
-            default:
-                return $this->usage();
-
-              break;
-        }
+                case 'h':
+                case '?':
+                default:
+                    return $this->usage();
+            }
         }
 
         if (null === $bootstrap) {
             $bootstrapDirectory = getcwd();
             $bootstrapFile      = '.bootstrap.atoum.php';
 
-            while ((false === file_exists($bootstrapDirectory . DS . $bootstrapFile))
-                  && ($bootstrapDirectory !== $handle = dirname($bootstrapDirectory))) {
+            while ((false === file_exists($bootstrapDirectory . DS . $bootstrapFile)) &&
+                   ($bootstrapDirectory !== $handle = dirname($bootstrapDirectory))) {
                 $bootstrapDirectory = $handle;
             }
 
@@ -132,24 +129,29 @@ class Generate extends Console\Dispatcher\Kit
 
             if (false === file_exists($bootstrap)) {
                 throw new Extension\Exception(
-                    'Bootstrap file is not found.', 0);
+                    'Bootstrap file is not found.',
+                    0
+                );
             }
         } elseif (false === file_exists($bootstrap)) {
             throw new Extension\Exception(
-                'Bootstrap file %s does not exist.', 1, $bootstrap);
+                'Bootstrap file %s does not exist.',
+                1,
+                $bootstrap
+            );
         }
 
         $generator = new Extension\Praspel\Generator();
         $generator->setTestNamespacer(function ($namespace) use ($testNamespace) {
-
             return $testNamespace . '\\' . $namespace;
         });
-        $phpBinary = Consistency::getPHPBinary() ?:
-                         Console\Processus::locate('php');
+        $phpBinary = Consistency::getPHPBinary() ?: Console\Processus::locate('php');
 
         if (null === $phpBinary) {
             throw new Extension\Exception(
-                'PHP binary is not found…', 1);
+                'PHP binary is not found…',
+                2
+            );
         }
 
         $envVariable   = '__ATOUM_PRASPEL_EXTENSION_' . md5(Consistency::uuid());
@@ -171,14 +173,12 @@ class Generate extends Console\Dispatcher\Kit
             return false;
         });
         $reflectionner->on('output', function (Event\Bucket $bucket) use (&$buffer) {
-
             $data    = $bucket->getData();
             $buffer .= $data['line'] . "\n";
 
             return;
         });
         $reflectionner->on('stop', function () use (&$buffer, &$reflection) {
-
             $handle = @unserialize($buffer);
 
             if (false === $handle) {
@@ -222,8 +222,9 @@ class Generate extends Console\Dispatcher\Kit
             file_put_contents($filename, $output);
 
             Console\Cursor::clear('↔');
-            echo '  ', Console\Chrome\Text::colorize('✔︎', 'foreground(green)'),
-                 ' ', $status, "\n";
+            echo
+                '  ', Console\Chrome\Text::colorize('✔︎', 'foreground(green)'),
+                ' ', $status, "\n";
         }
 
         return;
@@ -236,15 +237,16 @@ class Generate extends Console\Dispatcher\Kit
      */
     public function usage()
     {
-        echo 'Usage   : generate <options>', "\n",
-             'Options :', "\n",
-             $this->makeUsageOptionsList([
-                 'b'    => 'Bootstrap file (load Hoa and atoum).',
-                 'c'    => 'Class to scan.',
-                 'n'    => 'Out namespace (by default: tests\praspel).',
-                 'r'    => 'Root of the out namespace.',
-                 'help' => 'This help.'
-             ]), "\n";
+        echo
+            'Usage   : generate <options>', "\n",
+            'Options :', "\n",
+            $this->makeUsageOptionsList([
+                'b'    => 'Bootstrap file (load Hoa and atoum).',
+                'c'    => 'Class to scan.',
+                'n'    => 'Out namespace (by default: tests\praspel).',
+                'r'    => 'Root of the out namespace.',
+                'help' => 'This help.'
+            ]), "\n";
 
         return;
     }

@@ -91,7 +91,9 @@ class Generator
 
         if (!($class instanceof Reflection\RClass)) {
             throw new Exception(
-                'Generate works only with reflection instances.', 0);
+                'Generate works only with reflection instances.',
+                0
+            );
         }
 
         $namespacer = $this->getTestNamespacer();
@@ -151,7 +153,8 @@ class Generator
                         $id,
                         '    ' . str_replace("\n", "\n" . '    ', $contract)
                     ],
-                    $e);
+                    $e
+                );
             }
 
             if (false === $specification->clauseExists('invariant')) {
@@ -213,13 +216,14 @@ class Generator
                 throw new Exception(
                     'The method %s (in %s) has an ' .
                     'error in the following contract:' . "\n\n" . '%s' . "\n",
-                    1,
+                    2,
                     [
                         $className . '::' . $methodName,
                         $method->getFileName() . '#' . $method->getStartLine(),
                         '    ' . str_replace("\n", "\n" . '    ', $contract)
                     ],
-                    $e);
+                    $e
+                );
             }
 
             $coverage = new HoaPraspel\Iterator\Coverage($specification);

@@ -69,19 +69,16 @@ class Welcome extends Console\Dispatcher\Kit
     {
         while (false !== $c = $this->getOption($v)) {
             switch ($c) {
+                case '__ambiguous':
+                    $this->resolveOptionAmbiguity($v);
 
-            case '__ambiguous':
-                $this->resolveOptionAmbiguity($v);
+                    break;
 
-              break;
-
-            case 'h':
-            case '?':
-            default:
-                return $this->usage();
-
-              break;
-        }
+                case 'h':
+                case '?':
+                default:
+                    return $this->usage();
+            }
         }
 
         echo 'Welcome!';
@@ -96,13 +93,14 @@ class Welcome extends Console\Dispatcher\Kit
      */
     public function usage()
     {
-        echo 'Usage   : atoum:generate <options>', "\n",
-             'Options :', "\n",
-             $this->makeUsageOptionsList([
-                 'b'    => 'Bootstrap file (load Hoa and atoum).',
-                 'c'    => 'Class to scan.',
-                 'help' => 'This help.'
-             ]), "\n";
+        echo
+            'Usage   : atoum:generate <options>', "\n",
+            'Options :', "\n",
+            $this->makeUsageOptionsList([
+                'b'    => 'Bootstrap file (load Hoa and atoum).',
+                'c'    => 'Class to scan.',
+                'help' => 'This help.'
+            ]), "\n";
 
         return;
     }
