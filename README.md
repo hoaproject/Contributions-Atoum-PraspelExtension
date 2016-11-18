@@ -1,12 +1,12 @@
 # atoum/praspel-extension
 
 This extension introduces
-[Praspel](http://central.hoa-project.net/Resource/Library/Praspel) inside atoum.
+[Praspel](https://central.hoa-project.net/Resource/Library/Praspel) inside atoum.
 
 [atoum](http://atoum.org/) is a **simple**, **modern** and **intuitive** unit
 testing framework for PHP!
 
-[Hoa](http://hoa-project.net/) is a **modular**, **extensible** and
+[Hoa](https://hoa-project.net/) is a **modular**, **extensible** and
 **structured** set of PHP libraries.  Moreover, Hoa aims at being a bridge
 between industrial and research worlds.
 
@@ -21,7 +21,7 @@ composer require --dev atoum/praspel-extension
 ```
 
 Please, read the website to [get more informations about how to
-install](http://hoa-project.net/Source.html).
+install](https://hoa-project.net/Source.html).
 
 And to activate the extension, add this line on your `.atoum.php` configuration
 file:
@@ -33,9 +33,9 @@ $runner->addExtension(new \Atoum\PraspelExtension\Manifest());
 ## Quick usage
 
 This extension brings two aspects into atoum: automatic test data generation
-(from [`Hoa\Realdom`](http://central.hoa-project.net/Resource/Library/Realdom))
+(from [`Hoa\Realdom`](https://central.hoa-project.net/Resource/Library/Realdom))
 and automatic test suite generation (from
-[`Hoa\Praspel`](http://central.hoa-project.net/Resource/Library/Praspel), which
+[`Hoa\Praspel`](https://central.hoa-project.net/Resource/Library/Praspel), which
 relies on `Hoa\Realdom`).
 
 ### Automatic test data generation
@@ -58,15 +58,16 @@ $this->sample($this->realdom->boundinteger(7, 13)->or->boundinteger(42, 153))
 We can obviously use the classical asserters from atoum:
 
 ```php
-foreach($this->sampleMany($this->realdom->boundinteger(-5, 5), 1024) as $i)
+foreach ($this->sampleMany($this->realdom->boundinteger(-5, 5), 1024) as $i) {
     $this->integer($i)->isGreaterThan(0);
+}
 ```
 
 (this example is a little dummy ;-)).
 
 We can generate more sophisticated data (please, see the standard realistic
 domain library in
-[`Hoa\Realdom`](http://central.hoa-project.net/Resource/Library/Realdom)), such
+[`Hoa\Realdom`](https://central.hoa-project.net/Resource/Library/Realdom)), such
 as strings based on regular expressions (and also grammars):
 
 ```php
@@ -86,8 +87,9 @@ $data = $this->realdom->date(
     )
 );
 
-foreach($this->sampleMany($data, 10) as $date)
+foreach ($this->sampleMany($data, 10) as $date) {
     var_dump($date);
+}
 ```
 
 ### Automatic test suite generation
@@ -98,13 +100,13 @@ We will use the `Bin/praspel` binary script.
 ## Documentation of Hoa
 
 Different documentations can be found on the website:
-[http://hoa-project.net/](http://hoa-project.net/).
+[https://hoa-project.net/](https://hoa-project.net/).
 
 ## Links
 
-* [atoum](http://atoum.org)
-* [atoum's documentation](http://docs.atoum.org)
-* [hoa](http://hoa-project.net)
+* [atoum](http://atoum.org),
+* [atoum's documentation](http://docs.atoum.org),
+* [Hoa](http://hoa-project.net).
 
 ## License
 
@@ -113,4 +115,4 @@ Please, see [`LICENSE`](http://hoa-project.net/LICENSE).
 
 ![atoum](http://atoum.org/images/logo/atoum.png)
 +
-![Hoa](http://static.hoa-project.net/Image/Hoa_small.png)
+![Hoa](https://static.hoa-project.net/Image/Hoa_small.png)
