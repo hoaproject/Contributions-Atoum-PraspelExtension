@@ -1,6 +1,7 @@
-![atoum](http://downloads.atoum.org/images/logo.png)
-+
-![Hoa](http://static.hoa-project.net/Image/Hoa_small.png)
+# atoum/praspel-extension
+
+This extension introduces
+[Praspel](http://central.hoa-project.net/Resource/Library/Praspel) inside atoum.
 
 [atoum](http://atoum.org/) is a **simple**, **modern** and **intuitive** unit
 testing framework for PHP!
@@ -9,23 +10,14 @@ testing framework for PHP!
 **structured** set of PHP libraries.  Moreover, Hoa aims at being a bridge
 between industrial and research worlds.
 
-# Atoum\PraspelExtension
-
-This extension introduces
-[Praspel](http://central.hoa-project.net/Resource/Library/Praspel) inside atoum.
-
 ## Installation
 
 With [Composer](http://getcomposer.org/), to include this library into your
 dependencies, you need to require
 [`atoum/praspel-extension`](https://packagist.org/packages/atoum/praspel-extension):
 
-```json
-{
-    "require": {
-        "atoum/praspel-extension": "~0.0"
-    }
-}
+```
+composer require --dev atoum/praspel-extension
 ```
 
 Please, read the website to [get more informations about how to
@@ -108,7 +100,17 @@ We will use the `Bin/praspel` binary script.
 Different documentations can be found on the website:
 [http://hoa-project.net/](http://hoa-project.net/).
 
+## Links
+
+* [atoum](http://atoum.org)
+* [atoum's documentation](http://docs.atoum.org)
+* [hoa](http://hoa-project.net)
+
 ## License
 
 Hoa, along with this extension, is under the New BSD License (BSD-3-Clause).
 Please, see [`LICENSE`](http://hoa-project.net/LICENSE).
+
+![atoum](http://atoum.org/images/logo/atoum.png)
++
+![Hoa](http://static.hoa-project.net/Image/Hoa_small.png)
