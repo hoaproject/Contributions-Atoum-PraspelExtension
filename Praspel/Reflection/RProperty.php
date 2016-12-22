@@ -39,7 +39,7 @@ namespace Atoum\PraspelExtension\Praspel\Reflection {
 /**
  * Class \Atoum\PraspelExtension\Praspel\Reflection\RProperty.
  *
- * 
+ *
  *
  * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License

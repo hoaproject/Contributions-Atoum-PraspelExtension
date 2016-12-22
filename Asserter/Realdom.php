@@ -98,7 +98,6 @@ class Realdom extends atoum\asserter
         return new HoaIterator\Limit(
             new HoaIterator\CallbackGenerator(
                 function () use ($realdoms) {
-
                     return $realdoms->sample();
                 }
             ),

@@ -39,7 +39,7 @@ namespace Atoum\PraspelExtension\Praspel\Reflection {
 /**
  * Class \Atoum\PraspelExtension\Praspel\Reflection\RMethod.
  *
- * 
+ *
  *
  * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License

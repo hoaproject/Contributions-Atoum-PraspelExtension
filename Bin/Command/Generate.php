@@ -159,7 +159,6 @@ class Generate extends Console\Dispatcher\Kit
         $buffer        = null;
         $reflectionner = new Console\Processus($phpBinary);
         $reflectionner->on('input', function (Event\Bucket $bucket) use ($envVariable, $bootstrap) {
-
             $bucket->getSource()->writeAll(
                 '<?php' . "\n" .
                 'require_once \'' . $bootstrap . '\';' . "\n" .
