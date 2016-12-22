@@ -105,11 +105,9 @@ class Manifest implements atoum\extension
              ->setHandler('sampleMany', function (Realdom\Disjunction $realdom, $n = 7) use ($test) {
                  return $test->realdom->sampleMany($realdom, $n);
              })
-
              ->setHandler('praspel', function () use ($praspel) {
                  return $praspel;
-             })
-             ;
+             });
 
         return;
     }
