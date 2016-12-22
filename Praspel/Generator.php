@@ -67,8 +67,6 @@ class Generator
 
     /**
      * Constructor.
-     *
-     * @return  void
      */
     public function __construct()
     {
@@ -100,7 +98,6 @@ class Generator
 
         if (null === $namespacer) {
             $namespacer = function ($namespace) {
-
                 return $namespace;
             };
         }

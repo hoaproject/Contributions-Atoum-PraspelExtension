@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -35,35 +35,32 @@
  */
 
 namespace Atoum\PraspelExtension;
- 
-use mageekguy\atoum;
+
 use Hoa\Math;
 use Hoa\Realdom;
+use mageekguy\atoum;
 
 /**
  * Class \Atoum\PraspelExtension\Manifest.
  *
  * Bootstrap of the extension.
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @author     Julien Bianchi <julien.bianchi@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin, Julien Bianchi.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
- 
-class Manifest implements atoum\extension {
-
+class Manifest implements atoum\extension
+{
     /**
      * Test instance.
      *
-     * @var \atoum\runner object
+     * @var \atoum\runner
      */
     protected $_test   = null;
 
     /**
      * Runner instance.
      *
-     * @var \atoum\runner object
+     * @var \atoum\runner
      */
     protected $_runner = null;
 
@@ -72,12 +69,11 @@ class Manifest implements atoum\extension {
     /**
      * Hook for the runner.
      *
-     * @access  public
      * @param   \atoum\runner  $runner    Runner instance.
      * @return  void
      */
-    public function setRunner ( atoum\runner $runner ) {
-
+    public function setRunner(atoum\runner $runner)
+    {
         $this->_runner = $runner;
 
         return;
@@ -86,36 +82,31 @@ class Manifest implements atoum\extension {
     /**
      * Hook for the test.
      *
-     * @access  public
      * @param   \atoum\test  $test    Test instance.
      * @return  void
      */
-    public function setTest ( atoum\test $test ) {
-
+    public function setTest(atoum\test $test)
+    {
         $this->_test = $test;
 
         Realdom\Realdom::setDefaultSampler(new Math\Sampler\Random());
         $asserterGenerator = $test->getAsserterGenerator();
-        $realdom = new Asserter\Realdom($asserterGenerator);
-        $praspel = new Asserter\Praspel($asserterGenerator);
+        $realdom           = new Asserter\Realdom($asserterGenerator);
+        $praspel           = new Asserter\Praspel($asserterGenerator);
 
         $this->_test
              ->getAssertionManager()
-             ->setHandler('realdom', function ( ) use ( $realdom ) {
-
+             ->setHandler('realdom', function () use ($realdom) {
                  return $realdom;
              })
-             ->setHandler('sample', function ( Realdom\Disjunction $realdom ) use ( $test ) {
-
+             ->setHandler('sample', function (Realdom\Disjunction $realdom) use ($test) {
                  return $test->realdom->sample($realdom);
              })
-             ->setHandler('sampleMany', function ( Realdom\Disjunction $realdom, $n = 7 ) use ( $test ) {
-
+             ->setHandler('sampleMany', function (Realdom\Disjunction $realdom, $n = 7) use ($test) {
                  return $test->realdom->sampleMany($realdom, $n);
              })
 
-             ->setHandler('praspel', function ( ) use ( $praspel ) {
-
+             ->setHandler('praspel', function () use ($praspel) {
                  return $praspel;
              })
              ;
@@ -126,13 +117,12 @@ class Manifest implements atoum\extension {
     /**
      * Hook for event handler.
      *
-     * @access  public
      * @param   string             $event         Event name.
      * @param   \atoum\observable  $observable    Observable.
      * @return  void
      */
-    public function handleEvent ( $event, atoum\observable $observable ) {
-
+    public function handleEvent($event, atoum\observable $observable)
+    {
         return;
     }
-} 
+}

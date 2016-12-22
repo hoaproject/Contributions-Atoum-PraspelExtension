@@ -8,7 +8,7 @@
  *
  * New BSD License
  *
- * Copyright © 2007-2014, Ivan Enderlin. All rights reserved.
+ * Copyright © 2007-2016, Hoa community. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -43,13 +43,11 @@ use mageekguy\atoum;
  *
  * Automatically generated test must extend this class, that extend \atoum\test.
  *
- * @author     Ivan Enderlin <ivan.enderlin@hoa-project.net>
- * @copyright  Copyright © 2007-2014 Ivan Enderlin.
+ * @copyright  Copyright © 2007-2016 Hoa community
  * @license    New BSD License
  */
-
-class Test extends atoum\test {
-
+class Test extends atoum\test
+{
     /**
      * Default namespace.
      *
@@ -76,12 +74,11 @@ class Test extends atoum\test {
     /**
      * Define what to do before executing the test method.
      *
-     * @access  public
      * @param   string  $testMethod    Test method name.
      * @return  void
      */
-    public function beforeTestMethod ( $testMethod ) {
-
+    public function beforeTestMethod($testMethod)
+    {
         $out = parent::beforeTestMethod($testMethod);
         $this->beforeTestMethodPraspel($testMethod);
 
@@ -91,24 +88,27 @@ class Test extends atoum\test {
     /**
      * Praspel specific code before executing the test method.
      *
-     * @access  protected
      * @param   string  $testMethod    Test method name.
      * @return  void
      */
-    protected function beforeTestMethodPraspel ( $testMethod ) {
-
-        if(0 !== preg_match(static::TEST_METHOD_NAME_UNTESTED, $testMethod, $matches))
+    protected function beforeTestMethodPraspel($testMethod)
+    {
+        if (0 !== preg_match(static::TEST_METHOD_NAME_UNTESTED, $testMethod, $matches)) {
             throw new atoum\test\exceptions\skip(
-                'Method “' . $matches['method'] . '” is not tested.');
+                'Method “' . $matches['method'] . '” is not tested.'
+            );
+        }
 
-        if(   0 === preg_match(static::TEST_METHOD_NAME, $testMethod, $matches)
-           || empty($matches['method']))
+        if (0 === preg_match(static::TEST_METHOD_NAME, $testMethod, $matches)
+           || empty($matches['method'])) {
             throw new atoum\test\exceptions\skip(
                 'Method name “' . $testMethod . '” is not well-formed ' .
-                '(must match ' . static::TEST_METHOD_NAME . ').');
+                '(must match ' . static::TEST_METHOD_NAME . ').'
+            );
+        }
 
         $this->praspel->setWith($matches['method']);
 
         return;
     }
-} 
+}

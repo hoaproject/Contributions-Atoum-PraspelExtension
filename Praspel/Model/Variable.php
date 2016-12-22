@@ -65,7 +65,6 @@ class Variable extends Praspel\Model\Variable
      * @param   bool                                $local       Local.
      * @param   \Hoa\Praspel\Model\Clause           $clause      Clause.
      * @param   \Atoum\PraspelExtension\Asserter    $asserter    Asserter.
-     * @return  void
      * @throws  \Hoa\Praspel\Exception\Model
      */
     public function __construct(
