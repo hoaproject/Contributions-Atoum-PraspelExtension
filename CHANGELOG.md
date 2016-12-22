@@ -1,3 +1,10 @@
+# 0.16.12.22
+
+  * Merge branch 'incoming' (Ivan Enderlin, 2016-12-22T14:27:41+01:00)
+  * Documentation: Use HTTPS. (Ivan Enderlin, 2016-11-18T12:02:24+01:00)
+  * update README according to the new template (Adrien Gallou, 2016-11-18T10:46:46+01:00)
+  * Documentation: Update `support` properties. (Ivan Enderlin, 2016-10-11T17:10:02+02:00)
+
 # 0.16.06.06
 
   * Quality: Fix CS. (Ivan Enderlin, 2016-06-06T12:10:54+02:00)
