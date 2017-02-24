@@ -1,6 +1,7 @@
 # 0.17.02.24
 
   * Dependency: Ensure compatility with atoum 2 to 3. (Ivan Enderlin, 2017-02-24T14:43:28+01:00)
+
 # 0.16.12.22
 
   * Merge branch 'incoming' (Ivan Enderlin, 2016-12-22T14:27:41+01:00)
