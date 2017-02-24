@@ -23,7 +23,7 @@
         "source": "https://central.hoa-project.net/Resource/Contributions/Atoum/PraspelExtension"
     },
     "require": {
-        "atoum/atoum"    : "~3.0",
+        "atoum/atoum"    : "~2.8 | ~3.0",
         "hoa/consistency": "~1.0",
         "hoa/console"    : "~3.0",
         "hoa/dispatcher" : "~1.0",
